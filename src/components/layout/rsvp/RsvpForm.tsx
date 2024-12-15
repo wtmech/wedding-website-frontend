@@ -3,28 +3,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './RsvpForm.css';
-
-interface PlusOne {
-  fullName: string;
-  dietaryRestrictions: string;
-}
-
 interface Child {
   name: string;
   age: number;
   dietaryRestrictions: string;
 }
 
-interface InviteData {
-  _id: string;
-  fullName: string;
-  possiblePlusOne?: string;
-}
-
 export default function RsvpForm() {
   const [step, setStep] = useState<'search' | 'form'>('search');
   const [searchName, setSearchName] = useState('');
-  const [inviteData, setInviteData] = useState<InviteData | null>(null);
   const [searchError, setSearchError] = useState('');
 
   const [formData, setFormData] = useState({
@@ -54,19 +41,13 @@ export default function RsvpForm() {
       const invite = response.data;
 
       if (invite) {
-        setInviteData(invite);
-
-        // Check if the searched name matches the plus one
-        const isSearchedNamePlusOne = invite.possiblePlusOne?.toLowerCase() === searchName.toLowerCase();
-
-        // Set the form data based on who is responding
         setFormData(prev => ({
           ...prev,
           fullName: searchName,
           hasPlusOne: Boolean(invite.possiblePlusOne),
           plusOne: {
             ...prev.plusOne,
-            fullName: isSearchedNamePlusOne ? invite.fullName : invite.possiblePlusOne || ''
+            fullName: invite.possiblePlusOne || ''
           }
         }));
 
@@ -74,8 +55,8 @@ export default function RsvpForm() {
       } else {
         setSearchError('Name not found on the guest list. Please check the spelling or contact the hosts.');
       }
-    } catch (err: any) {
-      setSearchError(err.response?.data?.error || 'Error searching for invitation');
+    } catch (err: unknown) {
+      setSearchError(err instanceof Error ? err.message : 'Error searching for invitation');
     }
   };
 
@@ -85,7 +66,7 @@ export default function RsvpForm() {
     setSuccess(false);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/rsvps/rsvp', {
+      await axios.post('http://localhost:3000/api/rsvps/rsvp', {
         fullName: formData.fullName,
         email: formData.email,
         attending: formData.attending,
@@ -197,7 +178,7 @@ export default function RsvpForm() {
           {formData.hasPlusOne && (
             <div className="plus-one-section">
               <div className="form-group">
-                <label htmlFor="plusOneName">Plus One's Full Name</label>
+                <label htmlFor="plusOneName">Plus One&apos;s Full Name</label>
                 <input
                   type="text"
                   id="plusOneName"
@@ -206,7 +187,7 @@ export default function RsvpForm() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="plusOneDietary">Plus One's Dietary Restrictions</label>
+                <label htmlFor="plusOneDietary">Plus One&apos;s Dietary Restrictions</label>
                 <input
                   type="text"
                   id="plusOneDietary"
@@ -236,7 +217,7 @@ export default function RsvpForm() {
               {formData.children.map((child, index) => (
                 <div key={index} className="child-entry">
                   <div className="form-group">
-                    <label>Child's Name</label>
+                    <label>Child&apos;s Name</label>
                     <input
                       type="text"
                       value={child.name}

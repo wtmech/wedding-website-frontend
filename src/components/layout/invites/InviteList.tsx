@@ -105,8 +105,8 @@ export default function InviteList() {
       <div className="invite-summary">
         <h4>Summary</h4>
         <p>Total Invites: {invites.bride.length + invites.groom.length}</p>
-        <p>Bride's Guests: {invites.bride.length}</p>
-        <p>Groom's Guests: {invites.groom.length}</p>
+        <p>Bride&apos;s Guests: {invites.bride.length}</p>
+        <p>Groom&apos;s Guests: {invites.groom.length}</p>
         <p>RSVPs Received: {
           [...invites.bride, ...invites.groom].filter(invite => invite.rsvp).length
         }</p>
