@@ -1,0 +1,21 @@
+.content {
+  padding: 2rem 1rem;
+}
+
+.content__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: 3rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    padding: 4rem 2rem;
+  }
+}

@@ -1,8 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wedding Website Frontend
 
-## Getting Started
+Frontend for B&K Wedding website built with Next.js 15, React 19, and TypeScript.
 
-First, run the development server:
+## Features
+
+- Wedding details and venue information
+- RSVP system
+- Guest list management
+- Protected admin routes
+- Responsive design
+
+## Setup
+
+1. Install dependencies:
 
 ```bash
 npm run dev

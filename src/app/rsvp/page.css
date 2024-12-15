@@ -1,0 +1,12 @@
+.rsvp-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.rsvp-description {
+  color: #ffecd9;
+  margin: 1rem 0 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

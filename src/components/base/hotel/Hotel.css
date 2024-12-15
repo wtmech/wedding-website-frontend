@@ -1,0 +1,26 @@
+.hotel {
+  margin: 1rem 0;
+}
+
+.hotel-name {
+  margin-bottom: 0.5rem;
+}
+
+.hotel-link {
+  color: #FFECD9;
+  text-decoration: none;
+}
+
+.hotel-link:hover {
+  text-decoration: underline;
+}
+
+.hotel-distance {
+  font-size: 0.9rem;
+  color: #F0F0F2;
+}
+
+.separator {
+  margin: 0 0.5rem;
+  color: #F0F0F2;
+}

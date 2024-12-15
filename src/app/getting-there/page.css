@@ -1,0 +1,23 @@
+.getting-there-page h2 {
+  font-family: var(--playfair);
+}
+
+.section {
+  margin: 1rem 0 0.5rem 0;
+}
+
+.section strong {
+  font-family: serif;
+}
+
+.reviews {
+  font-size: 0.8rem;
+}
+
+.section ul {
+  list-style: none;
+}
+
+.section ul li {
+  margin-top: 0.5rem;
+}

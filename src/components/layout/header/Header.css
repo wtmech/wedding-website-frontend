@@ -1,0 +1,125 @@
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 80px;
+  background-color: #9caf88;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.header-rsvp {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: 1px solid #f0f0f2;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #f0f0f2;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.header-rsvp:hover {
+  background-color: #f0f0f2;
+  color: #9caf88;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-logo a {
+  text-decoration: none;
+  color: #f0f0f2;
+  font-size: 2.5em;
+  font-weight: 700;
+  font-family: var(--playfair);
+  position: relative;
+  display: inline-block;
+}
+
+.header-logo-letter {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.header-logo-letter.b {
+  margin-right: -0.1em;
+  transform: translateY(-0.2em);
+  z-index: 2;
+}
+
+.header-logo-letter.and {
+  font-size: 0.7em;
+  font-family: var(--alice);
+}
+
+.header-logo-letter.k {
+  margin-left: -0.1em;
+  transform: translateY(0.4em);
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.header-menu-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 0;
+  position: relative;
+  z-index: 1001;
+}
+
+.header-menu-button span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #f0f0f2;
+  transition: all 0.3s ease;
+}
+
+.header-menu-button.open span:first-child {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.header-menu-button.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.header-menu-button.open span:last-child {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 15px;
+  }
+
+  .header-logo a {
+    font-size: 2em;
+  }
+
+  .header-rsvp {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .header-menu-button {
+    margin-right: 0;
+  }
+}
