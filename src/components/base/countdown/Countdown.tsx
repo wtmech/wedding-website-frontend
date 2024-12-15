@@ -28,7 +28,7 @@ function Countdown({ targetDate }: CountdownProps) {
   if (isComplete) {
     return (
       <div className="countdown-complete">
-        <span>The big day is here! Let's celebrate love! 🎉</span>
+        <span>The big day is here! Let&apos;s celebrate love! 🎉</span>
       </div>
     );
   }

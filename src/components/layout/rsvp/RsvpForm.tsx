@@ -109,8 +109,10 @@ export default function RsvpForm() {
         dietaryRestrictions: '',
         additionalNotes: ''
       });
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'An error occurred while submitting your RSVP');
+    } catch (err: Error | unknown) {
+      setError(
+        err instanceof Error ? err.message : 'An error occurred while submitting'
+      );
     }
   };
 
@@ -186,7 +188,7 @@ export default function RsvpForm() {
             checked={formData.attending}
             onChange={e => setFormData(prev => ({ ...prev, attending: e.target.checked }))}
           />
-          I will be attending
+          I&apos;ll be attending
         </label>
       </div>
 

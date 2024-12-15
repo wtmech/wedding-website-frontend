@@ -36,12 +36,10 @@ export default function InviteList() {
 
       setInvites(separatedInvites);
       setError(null);
-    } catch (err: any) {
+    } catch (err: Error | unknown) {
       console.error('Error details:', err);
       setError(
-        err.response?.data?.error ||
-        err.message ||
-        'Failed to fetch invites'
+        err instanceof Error ? err.message : 'Failed to fetch invites'
       );
     } finally {
       setIsLoading(false);
@@ -61,7 +59,7 @@ export default function InviteList() {
               {invite.possiblePlusOne && (
                 <span className="plus-one">+1: {invite.possiblePlusOne}</span>
               )}
-              {invite.rsvp && <span className="rsvp-badge">RSVP'd</span>}
+              {invite.rsvp && <span className="rsvp-badge">RSVP&apos;d</span>}
             </li>
           ))}
         </ul>

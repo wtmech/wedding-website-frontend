@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Content from '@/components/base/content/Content';
 import Heading from '@/components/base/heading/Heading';
 import RsvpForm from '@/components/layout/rsvp/RsvpForm';

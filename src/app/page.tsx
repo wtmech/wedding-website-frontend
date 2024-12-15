@@ -2,6 +2,19 @@ import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
 import Heading from '@/components/base/heading/Heading'
 
+interface WeddingDetail {
+  title: string;
+  date?: string;
+  time?: string;
+  name?: string;
+  address?: string;
+  text?: string;
+}
+
+interface WeddingDetails {
+  [key: string]: WeddingDetail;
+}
+
 export default function Home() {
   const weddingDetails = {
     date: {
@@ -20,9 +33,9 @@ export default function Home() {
     }
   }
 
-  const renderDetails = (details: any) => (
+  const renderDetails = (details: WeddingDetails) => (
   <div className="details-section">
-    {Object.entries(details).map(([key, value]: [string, any]) => (
+    {Object.entries(details).map(([key, value]: [string, WeddingDetail]) => (
       <div key={key}>
         <Heading level={3} color="#FFECD9">{value.title}</Heading>
         {value.date && <p>{value.date} at {value.time}</p>}
