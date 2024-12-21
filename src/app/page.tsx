@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect } from 'react';
+import { warmupServer } from '@/utils/warmupServer';
 import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
 import Heading from '@/components/base/heading/Heading'
@@ -16,6 +20,10 @@ interface WeddingDetails {
 }
 
 export default function Home() {
+  useEffect(() => {
+    warmupServer();
+  }, []);
+
   const weddingDetails = {
     date: {
       title: "Date",
