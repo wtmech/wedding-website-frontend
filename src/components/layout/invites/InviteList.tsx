@@ -13,6 +13,7 @@ interface Invite {
   rsvp: string | null;
 }
 
+export default function InviteList() {
   const [invites, setInvites] = useState<{ bride: Invite[], groom: Invite[] }>({
     bride: [],
     groom: []
