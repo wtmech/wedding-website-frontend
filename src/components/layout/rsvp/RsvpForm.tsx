@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axiosInstance from '@/config/api';
 import { endpoints } from '@/config/api';
 
@@ -33,6 +33,10 @@ export default function RsvpForm() {
 
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+  }, []);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();

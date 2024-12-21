@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '@/config/api';
 import './InviteList.css';
 import { endpoints } from '@/config/api';
 
@@ -13,7 +13,6 @@ interface Invite {
   rsvp: string | null;
 }
 
-export default function InviteList() {
   const [invites, setInvites] = useState<{ bride: Invite[], groom: Invite[] }>({
     bride: [],
     groom: []
@@ -27,7 +26,7 @@ export default function InviteList() {
 
   const fetchInvites = async () => {
     try {
-      const response = await axios.get(endpoints.inviteList);
+      const response = await axiosInstance.get(endpoints.inviteList);
       const allInvites = response.data;
 
       const separatedInvites = {
