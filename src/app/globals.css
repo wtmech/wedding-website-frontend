@@ -125,3 +125,7 @@ button:focus-visible {
   width: 100%;
   min-height: 100vh;
 }
+
+.details-section div {
+  margin-top: 25px;
+}

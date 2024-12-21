@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import axiosInstance from '@/config/api';
-import './InviteList.css';
 import { endpoints } from '@/config/api';
+import Accordion from '@/components/base/accordion/Accordion';
+import './InviteList.css';
 
 interface Invite {
   _id: string;
@@ -47,27 +48,6 @@ export default function InviteList() {
     }
   };
 
-  const renderInviteList = (guestList: Invite[], title: string) => (
-    <div className="invite-list-section">
-      <h3>{title}</h3>
-      {guestList.length === 0 ? (
-        <p>No guests in this list.</p>
-      ) : (
-        <ul>
-          {guestList.map((invite) => (
-            <li key={invite._id} className={`invite-item ${invite.rsvp ? 'responded' : ''}`}>
-              <span className="invite-name">{invite.fullName}</span>
-              {invite.possiblePlusOne && (
-                <span className="plus-one">+1: {invite.possiblePlusOne}</span>
-              )}
-              {invite.rsvp && <span className="rsvp-badge">RSVP&apos;d</span>}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-
   if (isLoading) {
     return (
       <div className="loading-container">
@@ -97,21 +77,72 @@ export default function InviteList() {
     );
   }
 
+  const totalGuests = invites.bride.length + invites.groom.length;
+  const confirmedGuests = [...invites.bride, ...invites.groom]
+    .filter(invite => invite.rsvp).length;
+  const pendingGuests = totalGuests - confirmedGuests;
+
   return (
-    <div className="invite-list-container">
-      <div className="invite-lists">
-        {renderInviteList(invites.bride, "Bride's Guests")}
-        {renderInviteList(invites.groom, "Groom's Guests")}
+    <div className="invite-container">
+      {/* Summary Section */}
+      <div className="summary-section">
+        <h2>Guest List Summary</h2>
+        <div className="summary-grid">
+          <div className="summary-card">
+            <p className="summary-number">{totalGuests}</p>
+            <p className="summary-label">Total Guests</p>
+          </div>
+          <div className="summary-card confirmed">
+            <p className="summary-number">{confirmedGuests}</p>
+            <p className="summary-label">Confirmed</p>
+          </div>
+          <div className="summary-card pending">
+            <p className="summary-number">{pendingGuests}</p>
+            <p className="summary-label">Pending</p>
+          </div>
+        </div>
       </div>
-      <div className="invite-summary">
-        <h4>Summary</h4>
-        <p>Total Invites: {invites.bride.length + invites.groom.length}</p>
-        <p>Bride&apos;s Guests: {invites.bride.length}</p>
-        <p>Groom&apos;s Guests: {invites.groom.length}</p>
-        <p>RSVPs Received: {
-          [...invites.bride, ...invites.groom].filter(invite => invite.rsvp).length
-        }</p>
-      </div>
+
+      {/* Guest Lists */}
+      <Accordion title={`Groom's Guests (${invites.groom.length})`}>
+        <div className="guest-list">
+          {invites.groom.map((invite) => (
+            <div key={invite._id} className="guest-item">
+              <div className="guest-info">
+                <span className="guest-name">{invite.fullName}</span>
+                {invite.possiblePlusOne && (
+                  <span className="plus-one">
+                    +1: {invite.possiblePlusOne}
+                  </span>
+                )}
+              </div>
+              <span className={`status-badge ${invite.rsvp ? 'confirmed' : 'pending'}`}>
+                {invite.rsvp ? 'Confirmed' : 'Pending'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </Accordion>
+
+      <Accordion title={`Bride's Guests (${invites.bride.length})`}>
+        <div className="guest-list">
+          {invites.bride.map((invite) => (
+            <div key={invite._id} className="guest-item">
+              <div className="guest-info">
+                <span className="guest-name">{invite.fullName}</span>
+                {invite.possiblePlusOne && (
+                  <span className="plus-one">
+                    +1: {invite.possiblePlusOne}
+                  </span>
+                )}
+              </div>
+              <span className={`status-badge ${invite.rsvp ? 'confirmed' : 'pending'}`}>
+                {invite.rsvp ? 'Confirmed' : 'Pending'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </Accordion>
     </div>
   );
 }

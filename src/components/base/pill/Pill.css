@@ -1,6 +1,6 @@
 .pill {
   position: absolute;
-  bottom: 35%;
+  bottom: 30%;
   display: flex;
   justify-content: space-evenly;
   border-radius: 40px;
