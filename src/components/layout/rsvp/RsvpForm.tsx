@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import { endpoints } from '@/config/api';
+
 import './RsvpForm.css';
 interface Child {
   name: string;
@@ -37,7 +39,7 @@ export default function RsvpForm() {
     setSearchError('');
 
     try {
-      const response = await axios.get(`http://localhost:4000/api/invites/search?name=${encodeURIComponent(searchName)}`);
+      const response = await axios.get(endpoints.inviteSearch(searchName));
       const invite = response.data;
 
       if (invite) {
@@ -66,7 +68,7 @@ export default function RsvpForm() {
     setSuccess(false);
 
     try {
-      await axios.post('http://localhost:3000/api/rsvps/rsvp', {
+      await axios.post(endpoints.rsvpSubmit, {
         fullName: formData.fullName,
         email: formData.email,
         attending: formData.attending,

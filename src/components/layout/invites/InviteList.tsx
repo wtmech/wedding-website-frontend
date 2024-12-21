@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './InviteList.css';
+import { endpoints } from '@/config/api';
 
 interface Invite {
   _id: string;
@@ -26,7 +27,7 @@ export default function InviteList() {
 
   const fetchInvites = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/invites');
+      const response = await axios.get(endpoints.inviteList);
       const allInvites = response.data;
 
       const separatedInvites = {
