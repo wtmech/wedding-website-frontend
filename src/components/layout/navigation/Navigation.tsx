@@ -23,6 +23,11 @@ function Navigation({
           </Link>
         </li>
         <li>
+          <Link href="/things-to-do-in-calabria" onClick={onClose}>
+            Things to Do in Calabria
+          </Link>
+        </li>
+        <li>
           <Link href="/invites" onClick={onClose}>
             Invites
           </Link>

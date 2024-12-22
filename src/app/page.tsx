@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { warmupServer } from '@/utils/warmupServer';
+import { images } from '@/config/images';
 import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
 import Heading from '@/components/base/heading/Heading'
@@ -58,7 +59,7 @@ export default function Home() {
   return (
     <main>
       <Hero
-        imageUrl="/hero.JPEG"
+        imageUrl={images.hero}
         title="Billy"
         subtitle="Katia"
       />

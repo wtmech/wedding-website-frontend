@@ -1,5 +1,8 @@
 .invites-page {
   color: #ffecd9;
+  min-height: 100vh;
+  background-color: #332c2a;
+  margin-top: 80px;
 }
 
 .password-protection {
