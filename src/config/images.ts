@@ -5,11 +5,10 @@ if (!BLOB_BASE_URL) {
 }
 
 export const images = {
-  hero: `${BLOB_BASE_URL}/hero-5IoIfatgruB5pXIGZZOAb2C618erNh`,
+  hero: `${BLOB_BASE_URL}/hero-Uj37A2Bs7BlvgSk26Hr8vu9AsgtmvX`,
   tropea: `${BLOB_BASE_URL}/tropea-WuBGC8zfeeOEawFjO3ot3zvkzm39ox.jpg`,
   scilla: `${BLOB_BASE_URL}/scilla-QBCawAJoA2vnhoR4W4wKjEKY6AyxCM`,
   arcella: `${BLOB_BASE_URL}/arcella-IPeR9cebmErPaX0l0TK6dsAczNFNvX`,
   castello: `${BLOB_BASE_URL}/castella-8yiAXtrZIAYxaFag2o2YAxWIuk5OI8`,
   sila: `${BLOB_BASE_URL}/sila-PlZJaPPKCCf9Fsmjk3ZcetBi3dNvqq`,
-  // Add more images as needed
 };
