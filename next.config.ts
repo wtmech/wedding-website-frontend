@@ -5,9 +5,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
-    domains: [
-      'pjih39zmuzg7tml8.public.blob.vercel-storage.com'
-    ],
+    domains: [process.env.NEXT_PUBLIC_BLOB_BASE_UR].filter(Boolean) as string[],
   }
 };
 
