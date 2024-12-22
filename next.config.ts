@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
-    domains: [process.env.NEXT_PUBLIC_BLOB_BASE_URL].filter(Boolean) as string[],
+    domains: [process.env.NEXT_PUBLIC_BLOB_DOMAIN].filter(Boolean) as string[],
   }
 };
 
