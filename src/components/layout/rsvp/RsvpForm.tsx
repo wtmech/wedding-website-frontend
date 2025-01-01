@@ -147,9 +147,9 @@ export default function RsvpForm() {
       } else {
         throw new Error('No response data received');
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('RSVP submission error:', err);
-      setError(err?.response?.data?.message || err.message || 'There was an error submitting your RSVP. Please try again.');
+      setError(err instanceof Error ? err.message : 'There was an error submitting your RSVP. Please try again.');
     }
   };
 
@@ -320,7 +320,7 @@ export default function RsvpForm() {
           {formData.isAttending ? (
             <h2>Thank you for your RSVP! We look forward to celebrating with you!</h2>
           ) : (
-            <h2>Thank you for letting us know. We're sorry you won't be able to join us!</h2>
+            <h2>Thank you for letting us know. We&apos;re sorry you won&apos;t be able to join us!</h2>
           )}
         </div>
       )}
