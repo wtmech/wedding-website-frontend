@@ -21,14 +21,17 @@ export interface DietaryRestriction {
 
 export interface RsvpFormData {
   fullName: string;
+  email?: string;
   isAttending?: boolean;
   keepingPlusOne?: boolean;
   newPlusOne?: string;
   hasChildren?: boolean;
-  children?: Child[];
+  children?: { fullName: string }[];
   hasDietaryRestrictions?: boolean;
-  dietaryRestrictions?: DietaryRestriction[];
-  email?: string;
+  dietaryRestrictions?: { guestName: string; restriction: string }[];
+  plusOneDietaryRestrictions?: string[];
+  plusOne?: string;
+  customPlusOne?: string;
 }
 
 export interface RsvpPayload {

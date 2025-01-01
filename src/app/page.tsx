@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <main>
       <Hero
-        imageUrl={images.hero}
+        imageUrl={images.proposal}
         title="Billy"
         subtitle="Katia"
       />

@@ -34,7 +34,6 @@ function Header({ className = '' }: HeaderProps) {
         <Link href="/">Home</Link>
         <Link href="/getting-there">Getting There</Link>
         <Link href="/things-to-do-in-calabria">Things to Do</Link>
-        <Link href="/invites">Invites</Link>
       </nav>
 
       {/* HAMBURGER MENU (MOBILE ONLY) */}
