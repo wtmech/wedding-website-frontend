@@ -39,7 +39,7 @@ export default function RsvpForm() {
       }
     } catch (err) {
       console.error('Name search error:', err);
-      setError('Sorry, we can\'t find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.');
+      setError("Sorry, we can't find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.");
     }
   };
 
@@ -202,10 +202,10 @@ export default function RsvpForm() {
 
       {step === 4.5 && (
         <form onSubmit={handleNewPlusOneName}>
-          <h2>Please Enter Your Plus One's Full Name</h2>
+          <h2>Please Enter Your Plus One&apos;s Full Name</h2>
           <input
             type="text"
-            value={formData.newPlusOne || ''}
+            value={formData.newPlusOne || ""}
             onChange={(e) => setFormData(prev => ({ ...prev, newPlusOne: e.target.value }))}
             placeholder="Full Name"
             required
@@ -226,7 +226,7 @@ export default function RsvpForm() {
 
       {step === 6 && (
         <form onSubmit={handleChildrenNames}>
-          <h2>Please Enter Your Children's Names</h2>
+          <h2>Please Enter Your Children&apos;s Names</h2>
           <div className="children-inputs">
             <button type="button" onClick={() => setChildCount(prev => prev + 1)}>
               Add Child
