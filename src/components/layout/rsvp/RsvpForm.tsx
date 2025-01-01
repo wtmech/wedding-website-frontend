@@ -8,10 +8,14 @@ import { Invite, RsvpFormData, RsvpPayload } from './types';
 
 export default function RsvpForm() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<RsvpFormData>({ fullName: '' });
+  const [formData, setFormData] = useState<RsvpFormData>({
+    fullName: '',
+    plusOneDietaryRestrictions: []
+  });
   const [invite, setInvite] = useState<Invite | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [childCount, setChildCount] = useState(0);
+  const [showDietaryRestrictions] = useState(false);
 
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,14 +62,14 @@ export default function RsvpForm() {
     } else if (invite?.possiblePlusOne) {
       setStep(3);
     } else {
-      setStep(5); // Skip plus one questions
+      setStep(4);
     }
   };
 
   const handlePlusOneChoice = (keepingOriginal: boolean) => {
     setFormData(prev => ({ ...prev, keepingPlusOne: keepingOriginal }));
     if (keepingOriginal) {
-      setStep(5);
+      setStep(6);
     } else {
       setStep(4);
     }
@@ -73,43 +77,43 @@ export default function RsvpForm() {
 
   const handleNewPlusOne = (hasNew: boolean) => {
     if (!hasNew) {
-      setStep(5);
+      setStep(6);
     } else {
-      setStep(4.5); // Show name input
+      setStep(5);
     }
   };
 
   const handleNewPlusOneName = (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(5);
+    setStep(6); // Go to children question
   };
 
   const handleChildrenChoice = (hasChildren: boolean) => {
     setFormData(prev => ({ ...prev, hasChildren }));
     if (!hasChildren) {
-      setStep(7);
+      setStep(8);
     } else {
-      setStep(6);
+      setStep(7);
     }
   };
 
   const handleChildrenNames = (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(7);
+    setStep(8);
   };
 
   const handleDietaryRestrictions = (hasRestrictions: boolean) => {
     setFormData(prev => ({ ...prev, hasDietaryRestrictions: hasRestrictions }));
     if (!hasRestrictions) {
-      setStep(8);
+      setStep(10);
     } else {
-      setStep(7.5);
+      setStep(9);
     }
   };
 
   const handleDietaryDetails = (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(8);
+    setStep(10);
   };
 
   const handleEmailSubmit = (e: React.FormEvent) => {
@@ -145,13 +149,12 @@ export default function RsvpForm() {
         )?.restriction
       };
 
-      console.log('Submitting RSVP with payload:', payload);
 
       const response = await axiosInstance.post(endpoints.rsvpSubmit, payload);
 
       if (response?.data) {
         setError(null);
-        setStep(9);
+        setStep(11);
       } else {
         throw new Error('No response data received');
       }
@@ -161,9 +164,96 @@ export default function RsvpForm() {
     }
   };
 
+  const handleDietaryRestriction = (e: React.ChangeEvent<HTMLInputElement>, option: string) => {
+    const newRestrictions = [...(formData.dietaryRestrictions || [])];
+    if (e.target.checked) {
+      newRestrictions.push({ guestName: formData.fullName, restriction: option });
+    } else {
+      const idx = newRestrictions.findIndex(r => r.guestName === formData.fullName);
+      if (idx !== -1) newRestrictions.splice(idx, 1);
+    }
+    setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
+  };
+
+  const handlePlusOneDietaryRestriction = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const restrictions = e.target.checked ? ['restriction'] : [];
+    setFormData(prev => ({ ...prev, plusOneDietaryRestrictions: restrictions }));
+  };
+
+  const handleBackNavigation = () => {
+    const currentStep = Number(step);
+
+    switch (currentStep) {
+      case 2:  // From attendance question
+        setStep(1);
+        break;
+
+      case 3:  // From possiblePlusOne question
+        setStep(2);
+        break;
+
+      case 4:  // From "want a plus one?" question
+        if (invite?.possiblePlusOne) {
+          setStep(3)
+        } else {
+          setStep(2);  // Back to attendance
+        }
+        break;
+
+      case 5:  // From new plus one name input
+        setStep(4);
+        break;
+
+      case 6:  // From children question
+        if (invite?.possiblePlusOne && formData.keepingPlusOne) {
+          setStep(3);  // Back to possiblePlusOne question
+        } else if (formData.newPlusOne) {
+          setStep(5);  // Back to new plus one name input
+        } else {
+          setStep(4);  // Back to plus one choice
+        }
+        break;
+
+      case 7:  // From children names
+        setStep(6);
+        break;
+
+      case 8:  // From dietary restrictions question
+        setStep(6);
+        break;
+
+      case 9:  // From dietary details
+        setStep(8);
+        break;
+
+      case 10:  // From email
+        setStep(8);
+        break;
+
+      default:
+        setStep(prev => prev - 1);
+    }
+  };
+
+  // Helper function for the button group
+  const renderButtonGroup = (onSubmit: (e: React.FormEvent) => void, submitText: string = "Continue") => (
+    <div className="button-group">
+      {Number(step) !== 1 && (
+        <button
+          type="button"
+          onClick={handleBackNavigation}
+          className="back-button"
+        >
+          Back
+        </button>
+      )}
+      <button type="submit">{submitText}</button>
+    </div>
+  );
+
   return (
     <div className="rsvp-form">
-      {step === 1 && (
+      {Number(step) === 1 && (
         <form onSubmit={handleNameSubmit}>
           <h2>Please Enter Your Full Name</h2>
           <input
@@ -173,66 +263,102 @@ export default function RsvpForm() {
             placeholder="Full Name"
             required
           />
-          <button type="submit">Continue</button>
+          {renderButtonGroup(handleNameSubmit)}
           {error && <div className="error-message">{error}</div>}
         </form>
       )}
 
-      {step === 2 && (
-        <div className="attendance-choice">
+      {Number(step) === 2 && (
+        <form onSubmit={(e) => e.preventDefault()}>
           <h2>Will you be attending the wedding?</h2>
           <div className="button-group">
-            <button onClick={() => handleAttendanceChange(true)}>Yes</button>
-            <button onClick={() => handleAttendanceChange(false)}>No</button>
+            {Number(step) !== 1 && (
+              <button
+                type="button"
+                onClick={handleBackNavigation}
+                className="back-button"
+              >
+                Back
+              </button>
+            )}
+            <button type="button" onClick={() => handleAttendanceChange(true)}>Yes</button>
+            <button type="button" onClick={() => handleAttendanceChange(false)}>No</button>
           </div>
-        </div>
+        </form>
       )}
 
-      {step === 3 && invite?.possiblePlusOne && (
+      {Number(step) === 3 && invite?.possiblePlusOne && (
         <div className="plus-one-choice">
           <h2>Will {invite.possiblePlusOne} be joining you?</h2>
           <div className="button-group">
-            <button onClick={() => handlePlusOneChoice(true)}>Yes</button>
-            <button onClick={() => handlePlusOneChoice(false)}>No</button>
+            {Number(step) !== 1 && (
+              <button
+                type="button"
+                onClick={handleBackNavigation}
+                className="back-button"
+              >
+                Back
+              </button>
+            )}
+            <button type="button" onClick={() => handlePlusOneChoice(true)}>Yes</button>
+            <button type="button" onClick={() => handlePlusOneChoice(false)}>No</button>
           </div>
         </div>
       )}
 
-      {step === 4 && (
-        <div className="new-plus-one">
-          <h2>Would you like to bring a different plus one?</h2>
+      {Number(step) === 4 && (
+        <div className="plus-one-choice">
+          <h2>Would you like to bring a plus one?</h2>
           <div className="button-group">
-            <button onClick={() => handleNewPlusOne(true)}>Yes</button>
-            <button onClick={() => handleNewPlusOne(false)}>No</button>
+            {Number(step) !== 1 && (
+              <button
+                type="button"
+                onClick={handleBackNavigation}
+                className="back-button"
+              >
+                Back
+              </button>
+            )}
+            <button type="button" onClick={() => handleNewPlusOne(true)}>Yes</button>
+            <button type="button" onClick={() => handleNewPlusOne(false)}>No</button>
           </div>
         </div>
       )}
 
-      {step === 4.5 && (
+      {Number(step) === 5 && (
         <form onSubmit={handleNewPlusOneName}>
           <h2>Please Enter Your Plus One&apos;s Full Name</h2>
           <input
             type="text"
-            value={formData.newPlusOne || ""}
+            value={formData.newPlusOne || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, newPlusOne: e.target.value }))}
-            placeholder="Full Name"
+            placeholder="Plus One's Full Name"
             required
           />
-          <button type="submit">Continue</button>
+          {renderButtonGroup(handleNewPlusOneName)}
         </form>
       )}
 
-      {step === 5 && (
+      {Number(step) === 6 && (
         <div className="children-choice">
           <h2>Will you be bringing any children?</h2>
           <div className="button-group">
-            <button onClick={() => handleChildrenChoice(true)}>Yes</button>
-            <button onClick={() => handleChildrenChoice(false)}>No</button>
+            {Number(step) !== 1 && (
+              <button
+                type="button"
+                onClick={handleBackNavigation}
+                className="back-button"
+              >
+                Back
+              </button>
+            )}
+            <button type="button" onClick={() => handleChildrenChoice(true)}>Yes</button>
+            <button type="button" onClick={() => handleChildrenChoice(false)}>No</button>
           </div>
         </div>
       )}
 
-      {step === 6 && (
+      {Number(step) === 7 && (
         <form onSubmit={handleChildrenNames}>
           <h2>Please Enter Your Children&apos;s Names</h2>
           <div className="children-inputs">
@@ -240,43 +366,76 @@ export default function RsvpForm() {
               Add Child
             </button>
             {Array.from({ length: childCount }).map((_, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder={`Child ${index + 1} Full Name`}
-                onChange={(e) => {
-                  const newChildren = [...(formData.children || [])];
-                  newChildren[index] = { fullName: e.target.value };
-                  setFormData(prev => ({ ...prev, children: newChildren }));
-                }}
-                required
-              />
+              <div key={index} className="child-input-row">
+                <div className="input-with-x">
+                  <input
+                    type="text"
+                    placeholder={`Child ${index + 1} Full Name`}
+                    onChange={(e) => {
+                      const newChildren = [...(formData.children || [])];
+                      newChildren[index] = { fullName: e.target.value };
+                      setFormData(prev => ({ ...prev, children: newChildren }));
+                    }}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setChildCount(prev => prev - 1);
+                      const newChildren = [...(formData.children || [])];
+                      newChildren.splice(index, 1);
+                      setFormData(prev => ({ ...prev, children: newChildren }));
+                    }}
+                    className="remove-child-button"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
-          <button type="submit">Continue</button>
+          {renderButtonGroup(handleChildrenNames)}
         </form>
       )}
 
-      {step === 7 && (
+      {Number(step) === 8 && (
         <div className="dietary-choice">
           <h2>Does anyone in your party have dietary restrictions or prefer not to eat seafood?</h2>
           <p>The menu will be primarily seafood-based. Please let us know if anyone needs an alternative.</p>
           <div className="button-group">
-            <button onClick={() => handleDietaryRestrictions(true)}>Yes</button>
-            <button onClick={() => handleDietaryRestrictions(false)}>No</button>
+            {Number(step) !== 1 && (
+              <button
+                type="button"
+                onClick={handleBackNavigation}
+                className="back-button"
+              >
+                Back
+              </button>
+            )}
+            <button type="button" onClick={() => handleDietaryRestrictions(true)}>Yes</button>
+            <button type="button" onClick={() => handleDietaryRestrictions(false)}>No</button>
           </div>
         </div>
       )}
 
-      {step === 7.5 && (
+      {Number(step) === 9 && (
         <form onSubmit={handleDietaryDetails}>
-          <h2>Please Specify Dietary Restrictions</h2>
-          {[formData.fullName, formData.newPlusOne, ...(formData.children?.map(c => c.fullName) || [])].map((name, index) => (
+          <h2>Dietary Restrictions</h2>
+          <p className="dietary-instructions">
+            The wedding menu will feature seafood. Please only check the boxes for guests who have
+            seafood allergies, other dietary restrictions, or prefer a non seafood menu. <br /><br />If you have children, please indicate if they want a kids menu.
+          </p>
+          {[
+            formData.fullName,
+            formData.keepingPlusOne ? invite?.possiblePlusOne : formData.newPlusOne,
+            ...(formData.children?.map(c => c.fullName) || [])
+          ].map((name, index) => (
             name && (
               <div key={index} className="dietary-input">
                 <label>
                   <input
                     type="checkbox"
+                    checked={formData.dietaryRestrictions?.some(r => r.guestName === name) || false}
                     onChange={(e) => {
                       const newRestrictions = [...(formData.dietaryRestrictions || [])];
                       if (e.target.checked) {
@@ -291,26 +450,37 @@ export default function RsvpForm() {
                   {name}
                 </label>
                 {formData.dietaryRestrictions?.find(r => r.guestName === name) && (
-                  <input
-                    type="text"
-                    placeholder="Enter dietary restrictions or preference for beef"
+                  <textarea
+                    value={formData.dietaryRestrictions.find(r => r.guestName === name)?.restriction || ''}
+                    placeholder="Please enter any dietary restrictions or allergies. If you would like a non seafood menu, please specify here."
                     onChange={(e) => {
                       const newRestrictions = [...(formData.dietaryRestrictions || [])];
                       const idx = newRestrictions.findIndex(r => r.guestName === name);
                       if (idx !== -1) newRestrictions[idx].restriction = e.target.value;
                       setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
                     }}
+                    rows={3}
                     required
+                    className="dietary-textarea"
                   />
                 )}
               </div>
             )
           ))}
-          <button type="submit">Continue</button>
+          <div className="button-group">
+            <button
+              type="button"
+              onClick={handleBackNavigation}
+              className="back-button"
+            >
+              Back
+            </button>
+            <button type="submit">Continue</button>
+          </div>
         </form>
       )}
 
-      {step === 8 && (
+      {Number(step) === 10 && (
         <form onSubmit={handleEmailSubmit}>
           <h2>Would you like to provide an email for updates? (Optional)</h2>
           <input
@@ -319,16 +489,59 @@ export default function RsvpForm() {
             onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
             placeholder="Email Address"
           />
-          <button type="submit">Complete RSVP</button>
+          {renderButtonGroup(handleEmailSubmit, "Complete RSVP")}
         </form>
       )}
 
-      {step === 9 && (
+      {Number(step) === 11 && (
         <div className="success-message">
           {formData.isAttending ? (
             <h2>Thank you for your RSVP! We look forward to celebrating with you!</h2>
           ) : (
             <h2>Thank you for letting us know. We&apos;re sorry you won&apos;t be able to join us!</h2>
+          )}
+        </div>
+      )}
+
+      {showDietaryRestrictions && (
+        <div className="dietary-section">
+          <h3>Dietary Restrictions</h3>
+          <p className="dietary-note">
+            Please only select restrictions for guests who have them
+          </p>
+
+          {/* Main guest dietary restrictions */}
+          <div className="guest-dietary">
+            <span className="guest-name">{formData.fullName}</span>
+            <div className="dietary-options">
+              <label className="dietary-option">
+                <input
+                  type="checkbox"
+                  checked={formData.dietaryRestrictions?.some(r => r.restriction === 'restriction') || false}
+                  onChange={(e) => handleDietaryRestriction(e, 'restriction')}
+                />
+                <span>Has Dietary Restrictions</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Plus One dietary restrictions */}
+          {((formData.keepingPlusOne && invite?.possiblePlusOne) || formData.newPlusOne) && (
+            <div className="guest-dietary">
+              <span className="guest-name">
+                {formData.keepingPlusOne ? invite?.possiblePlusOne : formData.newPlusOne}
+              </span>
+              <div className="dietary-options">
+                <label className="dietary-option">
+                  <input
+                    type="checkbox"
+                    checked={formData.plusOneDietaryRestrictions?.includes('restriction') || false}
+                    onChange={(e) => handlePlusOneDietaryRestriction(e)}
+                  />
+                  <span>Has Dietary Restrictions</span>
+                </label>
+              </div>
+            </div>
           )}
         </div>
       )}

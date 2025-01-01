@@ -28,11 +28,6 @@ function Navigation({
           </Link>
         </li>
         <li>
-          <Link href="/invites" onClick={onClose}>
-            Invites
-          </Link>
-        </li>
-        <li>
           <Link href="/rsvp" onClick={onClose}>
             RSVP
           </Link>

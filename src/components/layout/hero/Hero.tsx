@@ -34,7 +34,7 @@ function Hero({ imageUrl, title, subtitle }: HeroProps) {
         fill
         priority
         className="hero-image"
-        style={{ objectFit: 'cover', objectPosition: '15% center' }}
+        style={{ objectFit: 'cover', objectPosition: '44% center' }}
       />
     </div>
   );
