@@ -1,305 +1,329 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axiosInstance from '@/config/api';
 import { endpoints } from '@/config/api';
-
 import './RsvpForm.css';
-interface Child {
-  name: string;
-  age: number;
-  dietaryRestrictions: string;
-}
+import { Invite, RsvpFormData, RsvpPayload } from './types';
 
 export default function RsvpForm() {
-  const [step, setStep] = useState<'search' | 'form'>('search');
-  const [searchName, setSearchName] = useState('');
-  const [searchError, setSearchError] = useState('');
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState<RsvpFormData>({ fullName: '' });
+  const [invite, setInvite] = useState<Invite | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [childCount, setChildCount] = useState(0);
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    attending: true,
-    hasPlusOne: false,
-    plusOne: {
-      fullName: '',
-      dietaryRestrictions: ''
-    },
-    hasChildren: false,
-    children: [] as Child[],
-    dietaryRestrictions: '',
-    additionalNotes: ''
-  });
-
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
-  }, []);
-
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSearchError('');
-
     try {
-      const response = await axiosInstance.get(endpoints.inviteSearch(searchName));
-      const invite = response.data;
-
-      if (invite) {
-        setFormData(prev => ({
-          ...prev,
-          fullName: searchName,
-          hasPlusOne: Boolean(invite.possiblePlusOne),
-          plusOne: {
-            ...prev.plusOne,
-            fullName: invite.possiblePlusOne || ''
-          }
-        }));
-
-        setStep('form');
-      } else {
-        setSearchError('Name not found on the guest list. Please check the spelling or contact the hosts.');
+      if (!formData.fullName.trim()) {
+        setError('Please enter your full name');
+        return;
       }
-    } catch (err: unknown) {
-      setSearchError(err instanceof Error ? err.message : 'Error searching for invitation');
+
+      const response = await axiosInstance.get(endpoints.inviteSearch(formData.fullName.trim()));
+
+      if (response?.data) {
+        if (response.data.rsvp) {
+          setError(
+            `You have already RSVP'd as ${response.data.rsvp === 'attending' ?
+            'attending' : 'not attending'}. If you need to make changes, please contact Billy or Katia directly.`
+          );
+          return;
+        }
+        setInvite(response.data);
+        setStep(2);
+        setError(null);
+      } else {
+        throw new Error('No data received');
+      }
+    } catch (err) {
+      console.error('Name search error:', err);
+      setError('Sorry, we can\'t find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.');
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAttendanceChange = (isAttending: boolean) => {
+    setFormData(prev => ({ ...prev, isAttending }));
+    if (!isAttending) {
+      handleSubmit();
+    } else if (invite?.possiblePlusOne) {
+      setStep(3);
+    } else {
+      setStep(5); // Skip plus one questions
+    }
+  };
+
+  const handlePlusOneChoice = (keepingOriginal: boolean) => {
+    setFormData(prev => ({ ...prev, keepingPlusOne: keepingOriginal }));
+    if (keepingOriginal) {
+      setStep(5);
+    } else {
+      setStep(4);
+    }
+  };
+
+  const handleNewPlusOne = (hasNew: boolean) => {
+    if (!hasNew) {
+      setStep(5);
+    } else {
+      setStep(4.5); // Show name input
+    }
+  };
+
+  const handleNewPlusOneName = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
+    setStep(5);
+  };
 
-    try {
-      await axiosInstance.post(endpoints.rsvpSubmit, {
-        fullName: formData.fullName,
-        email: formData.email,
-        attending: formData.attending,
-        plusOne: formData.hasPlusOne ? formData.plusOne : undefined,
-        children: formData.hasChildren ? formData.children : undefined,
-        dietaryRestrictions: formData.dietaryRestrictions,
-        additionalNotes: formData.additionalNotes
-      });
-
-      setSuccess(true);
-      setStep('search');
-      setSearchName('');
-      setFormData({
-        fullName: '',
-        email: '',
-        attending: true,
-        hasPlusOne: false,
-        plusOne: { fullName: '', dietaryRestrictions: '' },
-        hasChildren: false,
-        children: [],
-        dietaryRestrictions: '',
-        additionalNotes: ''
-      });
-    } catch (err: Error | unknown) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while submitting'
-      );
+  const handleChildrenChoice = (hasChildren: boolean) => {
+    setFormData(prev => ({ ...prev, hasChildren }));
+    if (!hasChildren) {
+      setStep(7);
+    } else {
+      setStep(6);
     }
   };
 
-  const addChild = () => {
-    setFormData(prev => ({
-      ...prev,
-      children: [...prev.children, { name: '', age: 0, dietaryRestrictions: '' }]
-    }));
+  const handleChildrenNames = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(7);
   };
 
-  const removeChild = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      children: prev.children.filter((_, i) => i !== index)
-    }));
+  const handleDietaryRestrictions = (hasRestrictions: boolean) => {
+    setFormData(prev => ({ ...prev, hasDietaryRestrictions: hasRestrictions }));
+    if (!hasRestrictions) {
+      setStep(8);
+    } else {
+      setStep(7.5);
+    }
   };
 
-  if (step === 'search') {
-    return (
-      <div className="rsvp-search">
-        <form onSubmit={handleSearch} className="search-form">
-          <div className="form-group">
-            <label htmlFor="searchName">Please enter your full name as it appears on your invitation:</label>
-            <input
-              type="text"
-              id="searchName"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-              required
-              className="search-input"
-            />
-          </div>
-          {searchError && <div className="error-message">{searchError}</div>}
-          <button type="submit" className="search-button">
-            Find My Invitation
-          </button>
-        </form>
-      </div>
-    );
-  }
+  const handleDietaryDetails = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(8);
+  };
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!invite?._id) {
+        throw new Error('Invalid invite data');
+      }
+
+      const payload: RsvpPayload = {
+        invitation: invite._id,
+        fullName: formData.fullName,
+        email: formData.email || undefined,
+        attending: formData.isAttending || false,
+        plusOne: formData.keepingPlusOne || formData.newPlusOne ? {
+          fullName: formData.keepingPlusOne ? invite.possiblePlusOne : formData.newPlusOne,
+          dietaryRestrictions: formData.dietaryRestrictions?.find(
+            d => d.guestName === (formData.keepingPlusOne ? invite.possiblePlusOne : formData.newPlusOne)
+          )?.restriction
+        } : undefined,
+        children: formData.children?.map(child => ({
+          name: child.fullName,
+          dietaryRestrictions: formData.dietaryRestrictions?.find(
+            d => d.guestName === child.fullName
+          )?.restriction
+        })),
+        dietaryRestrictions: formData.dietaryRestrictions?.find(
+          d => d.guestName === formData.fullName
+        )?.restriction
+      };
+
+      console.log('Submitting RSVP with payload:', payload);
+
+      const response = await axiosInstance.post(endpoints.rsvpSubmit, payload);
+
+      if (response?.data) {
+        setError(null);
+        setStep(9);
+      } else {
+        throw new Error('No response data received');
+      }
+    } catch (err: any) {
+      console.error('RSVP submission error:', err);
+      setError(err?.response?.data?.message || err.message || 'There was an error submitting your RSVP. Please try again.');
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="rsvp-form">
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">Thank you for your RSVP!</div>}
-
-      <div className="form-group">
-        <label htmlFor="fullName">Full Name *</label>
-        <input
-          type="text"
-          id="fullName"
-          required
-          value={formData.fullName}
-          onChange={e => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-          disabled // Name is set from search
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          value={formData.email}
-          onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>
+    <div className="rsvp-form">
+      {step === 1 && (
+        <form onSubmit={handleNameSubmit}>
+          <h2>Please Enter Your Full Name</h2>
           <input
-            type="checkbox"
-            checked={formData.attending}
-            onChange={e => setFormData(prev => ({ ...prev, attending: e.target.checked }))}
+            type="text"
+            value={formData.fullName}
+            onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+            placeholder="Full Name"
+            required
           />
-          I&apos;ll be attending
-        </label>
-      </div>
-
-      {formData.attending && (
-        <>
-          {formData.hasPlusOne && (
-            <div className="plus-one-section">
-              <div className="form-group">
-                <label htmlFor="plusOneName">Plus One&apos;s Full Name</label>
-                <input
-                  type="text"
-                  id="plusOneName"
-                  value={formData.plusOne.fullName}
-                  disabled // Plus one name is set from search
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="plusOneDietary">Plus One&apos;s Dietary Restrictions</label>
-                <input
-                  type="text"
-                  id="plusOneDietary"
-                  value={formData.plusOne.dietaryRestrictions}
-                  onChange={e => setFormData(prev => ({
-                    ...prev,
-                    plusOne: { ...prev.plusOne, dietaryRestrictions: e.target.value }
-                  }))}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="form-group">
-            <label>
-              <input
-                type="checkbox"
-                checked={formData.hasChildren}
-                onChange={e => setFormData(prev => ({ ...prev, hasChildren: e.target.checked }))}
-              />
-              I will bring children (ages 0-5)
-            </label>
-          </div>
-
-          {formData.hasChildren && (
-            <div className="children-section">
-              {formData.children.map((child, index) => (
-                <div key={index} className="child-entry">
-                  <div className="form-group">
-                    <label>Child&apos;s Name</label>
-                    <input
-                      type="text"
-                      value={child.name}
-                      onChange={e => {
-                        const newChildren = [...formData.children];
-                        newChildren[index].name = e.target.value;
-                        setFormData(prev => ({ ...prev, children: newChildren }));
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Age</label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="5"
-                      value={child.age}
-                      onChange={e => {
-                        const newChildren = [...formData.children];
-                        newChildren[index].age = parseInt(e.target.value);
-                        setFormData(prev => ({ ...prev, children: newChildren }));
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Dietary Restrictions</label>
-                    <input
-                      type="text"
-                      value={child.dietaryRestrictions}
-                      onChange={e => {
-                        const newChildren = [...formData.children];
-                        newChildren[index].dietaryRestrictions = e.target.value;
-                        setFormData(prev => ({ ...prev, children: newChildren }));
-                      }}
-                    />
-                  </div>
-                  <button type="button" onClick={() => removeChild(index)} className="remove-child">
-                    Remove Child
-                  </button>
-                </div>
-              ))}
-              <button type="button" onClick={addChild} className="add-child">
-                Add Child
-              </button>
-            </div>
-          )}
-
-          <div className="form-group">
-            <label htmlFor="dietaryRestrictions">Dietary Restrictions</label>
-            <input
-              type="text"
-              id="dietaryRestrictions"
-              value={formData.dietaryRestrictions}
-              onChange={e => setFormData(prev => ({ ...prev, dietaryRestrictions: e.target.value }))}
-            />
-          </div>
-        </>
+          <button type="submit">Continue</button>
+          {error && <div className="error-message">{error}</div>}
+        </form>
       )}
 
-      <div className="form-group">
-        <label htmlFor="additionalNotes">Additional Notes</label>
-        <textarea
-          id="additionalNotes"
-          value={formData.additionalNotes}
-          onChange={e => setFormData(prev => ({ ...prev, additionalNotes: e.target.value }))}
-        />
-      </div>
+      {step === 2 && (
+        <div className="attendance-choice">
+          <h2>Will you be attending the wedding?</h2>
+          <div className="button-group">
+            <button onClick={() => handleAttendanceChange(true)}>Yes</button>
+            <button onClick={() => handleAttendanceChange(false)}>No</button>
+          </div>
+        </div>
+      )}
 
-      <div className="form-actions">
-        <button type="button" onClick={() => setStep('search')} className="back-button">
-          Back to Search
-        </button>
-        <button type="submit" className="submit-button">
-          Submit RSVP
-        </button>
-      </div>
-    </form>
+      {step === 3 && invite?.possiblePlusOne && (
+        <div className="plus-one-choice">
+          <h2>Will {invite.possiblePlusOne} be joining you?</h2>
+          <div className="button-group">
+            <button onClick={() => handlePlusOneChoice(true)}>Yes</button>
+            <button onClick={() => handlePlusOneChoice(false)}>No</button>
+          </div>
+        </div>
+      )}
+
+      {step === 4 && (
+        <div className="new-plus-one">
+          <h2>Would you like to bring a different plus one?</h2>
+          <div className="button-group">
+            <button onClick={() => handleNewPlusOne(true)}>Yes</button>
+            <button onClick={() => handleNewPlusOne(false)}>No</button>
+          </div>
+        </div>
+      )}
+
+      {step === 4.5 && (
+        <form onSubmit={handleNewPlusOneName}>
+          <h2>Please Enter Your Plus One's Full Name</h2>
+          <input
+            type="text"
+            value={formData.newPlusOne || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, newPlusOne: e.target.value }))}
+            placeholder="Full Name"
+            required
+          />
+          <button type="submit">Continue</button>
+        </form>
+      )}
+
+      {step === 5 && (
+        <div className="children-choice">
+          <h2>Will you be bringing any children?</h2>
+          <div className="button-group">
+            <button onClick={() => handleChildrenChoice(true)}>Yes</button>
+            <button onClick={() => handleChildrenChoice(false)}>No</button>
+          </div>
+        </div>
+      )}
+
+      {step === 6 && (
+        <form onSubmit={handleChildrenNames}>
+          <h2>Please Enter Your Children's Names</h2>
+          <div className="children-inputs">
+            <button type="button" onClick={() => setChildCount(prev => prev + 1)}>
+              Add Child
+            </button>
+            {Array.from({ length: childCount }).map((_, index) => (
+              <input
+                key={index}
+                type="text"
+                placeholder={`Child ${index + 1} Full Name`}
+                onChange={(e) => {
+                  const newChildren = [...(formData.children || [])];
+                  newChildren[index] = { fullName: e.target.value };
+                  setFormData(prev => ({ ...prev, children: newChildren }));
+                }}
+                required
+              />
+            ))}
+          </div>
+          <button type="submit">Continue</button>
+        </form>
+      )}
+
+      {step === 7 && (
+        <div className="dietary-choice">
+          <h2>Does anyone in your party have dietary restrictions or prefer not to eat seafood?</h2>
+          <p>The menu will be primarily seafood-based. Please let us know if anyone needs an alternative.</p>
+          <div className="button-group">
+            <button onClick={() => handleDietaryRestrictions(true)}>Yes</button>
+            <button onClick={() => handleDietaryRestrictions(false)}>No</button>
+          </div>
+        </div>
+      )}
+
+      {step === 7.5 && (
+        <form onSubmit={handleDietaryDetails}>
+          <h2>Please Specify Dietary Restrictions</h2>
+          {[formData.fullName, formData.newPlusOne, ...(formData.children?.map(c => c.fullName) || [])].map((name, index) => (
+            name && (
+              <div key={index} className="dietary-input">
+                <label>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => {
+                      const newRestrictions = [...(formData.dietaryRestrictions || [])];
+                      if (e.target.checked) {
+                        newRestrictions.push({ guestName: name, restriction: '' });
+                      } else {
+                        const idx = newRestrictions.findIndex(r => r.guestName === name);
+                        if (idx !== -1) newRestrictions.splice(idx, 1);
+                      }
+                      setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
+                    }}
+                  />
+                  {name}
+                </label>
+                {formData.dietaryRestrictions?.find(r => r.guestName === name) && (
+                  <input
+                    type="text"
+                    placeholder="Enter dietary restrictions or preference for beef"
+                    onChange={(e) => {
+                      const newRestrictions = [...(formData.dietaryRestrictions || [])];
+                      const idx = newRestrictions.findIndex(r => r.guestName === name);
+                      if (idx !== -1) newRestrictions[idx].restriction = e.target.value;
+                      setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
+                    }}
+                    required
+                  />
+                )}
+              </div>
+            )
+          ))}
+          <button type="submit">Continue</button>
+        </form>
+      )}
+
+      {step === 8 && (
+        <form onSubmit={handleEmailSubmit}>
+          <h2>Would you like to provide an email for updates? (Optional)</h2>
+          <input
+            type="email"
+            value={formData.email || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+            placeholder="Email Address"
+          />
+          <button type="submit">Complete RSVP</button>
+        </form>
+      )}
+
+      {step === 9 && (
+        <div className="success-message">
+          {formData.isAttending ? (
+            <h2>Thank you for your RSVP! We look forward to celebrating with you!</h2>
+          ) : (
+            <h2>Thank you for letting us know. We're sorry you won't be able to join us!</h2>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
