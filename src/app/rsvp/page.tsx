@@ -5,7 +5,7 @@ import Heading from '@/components/base/heading/Heading';
 import RsvpForm from '@/components/layout/rsvp/RsvpForm';
 import './page.css';
 
-export default function Rsvp() {
+export default function RsvpPage() {
   return (
     <div className="rsvp-page page">
       <Content backgroundColor="#332c2a">

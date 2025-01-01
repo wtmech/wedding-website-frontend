@@ -1,6 +1,6 @@
 :root {
-  --playfair: 'Playfair Display', serif;
-  --alice: 'Alice', serif;
+  --playfair: "Playfair Display", serif;
+  --alice: "Alice", serif;
 }
 
 /* Reset and Base Styles */
@@ -21,6 +21,7 @@ body {
 }
 
 body {
+  background-color: #332c2a;
   font-family: var(--alice);
   line-height: 1.5;
   font-weight: 400;
