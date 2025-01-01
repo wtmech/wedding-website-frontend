@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState } from 'react';
+import Link from 'next/link';
 import Navigation from "@/components/layout/navigation/Navigation";
 import { HeaderProps } from "./types";
-import "./Header.css";
+import './Header.css';
 
 function Header({ className = '' }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -29,7 +29,15 @@ function Header({ className = '' }: HeaderProps) {
         </Link>
       </div>
 
-      {/* HAMBURGER MENU */}
+      {/* DESKTOP NAV */}
+      <nav className="header-nav">
+        <Link href="/">Home</Link>
+        <Link href="/getting-there">Getting There</Link>
+        <Link href="/things-to-do-in-calabria">Things to Do</Link>
+        <Link href="/invites">Invites</Link>
+      </nav>
+
+      {/* HAMBURGER MENU (MOBILE ONLY) */}
       <button
         className={`header-menu-button ${isMenuOpen ? 'open' : ''}`}
         onClick={toggleMenu}

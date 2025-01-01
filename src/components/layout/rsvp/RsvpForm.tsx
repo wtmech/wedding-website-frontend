@@ -15,13 +15,21 @@ export default function RsvpForm() {
 
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
     try {
       if (!formData.fullName.trim()) {
         setError('Please enter your full name');
         return;
       }
 
-      const response = await axiosInstance.get(endpoints.inviteSearch(formData.fullName.trim()));
+      const response = await axiosInstance.get(endpoints.inviteSearch(formData.fullName.trim()))
+        .catch((err) => {
+          if (err.code === 'ERR_NETWORK') {
+            throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
+          }
+          throw err;
+        });
 
       if (response?.data) {
         if (response.data.rsvp) {
@@ -33,13 +41,13 @@ export default function RsvpForm() {
         }
         setInvite(response.data);
         setStep(2);
-        setError(null);
       } else {
-        throw new Error('No data received');
+        throw new Error('No data received from server');
       }
     } catch (err) {
       console.error('Name search error:', err);
-      setError("Sorry, we can't find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.");
+      setError(err instanceof Error ? err.message :
+        "Sorry, we can't find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.");
     }
   };
 

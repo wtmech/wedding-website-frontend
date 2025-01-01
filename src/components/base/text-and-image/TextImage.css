@@ -26,6 +26,7 @@
 .image-wrapper {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .image-caption {
@@ -40,15 +41,19 @@
   .text-image-container {
     flex-direction: row;
     align-items: flex-start;
+    gap: 2rem;
   }
 
-  .image-container {
-    flex: 1;
-    aspect-ratio: 4/3;
+  .image-wrapper {
+    flex: 0 0 45%;
   }
 
   .text-image-container p {
-    flex: 2;
+    flex: 1;
+  }
+
+  .image-container {
+    aspect-ratio: 4/3;
   }
 
   /* Image position variants */

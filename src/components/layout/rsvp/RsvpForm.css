@@ -1,48 +1,41 @@
 .rsvp-form {
-  max-width: 600px;
+  max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #ffecd9;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .rsvp-form h2 {
-  font-family: var(--playfair);
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #332c2a;
+  color: #333;
 }
 
 .rsvp-form p {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #332c2a;
-  line-height: 1.5;
+  color: #666;
+  line-height: 1.6;
 }
 
 .rsvp-form form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-items: center;
 }
 
 .rsvp-form input[type="text"],
 .rsvp-form input[type="email"] {
-  padding: 0.75rem;
-  border: 1px solid #9caf88;
-  border-radius: 4px;
-  font-size: 1rem;
   width: 100%;
-  background-color: white;
-  color: #332c2a;
-}
-
-.rsvp-form input[type="text"]:focus,
-.rsvp-form input[type="email"]:focus {
-  outline: none;
-  border-color: #9caf88;
-  box-shadow: 0 0 0 2px rgba(156, 175, 136, 0.2);
+  max-width: 400px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
 .button-group {
@@ -53,109 +46,91 @@
 }
 
 .rsvp-form button {
-  padding: 0.75rem 1.5rem;
+  padding: 12px 24px;
   border: none;
-  border-radius: 4px;
-  background-color: #9caf88;
+  border-radius: 6px;
+  background-color: #2c5282;
   color: white;
-  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
-  min-width: 120px;
 }
 
 .rsvp-form button:hover {
-  background-color: #8a9c77;
-}
-
-.rsvp-form button[type="button"] {
-  background-color: #332c2a;
-  color: white;
-}
-
-.rsvp-form button[type="button"]:hover {
-  background-color: #4a413f;
+  background-color: #2a4365;
 }
 
 .error-message {
-  color: #dc2626;
+  color: #e53e3e;
   text-align: center;
   margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: rgba(220, 38, 38, 0.1);
-  border-radius: 4px;
-  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-.children-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 1rem 0;
+.success-message {
+  text-align: center;
+  color: #2f855a;
 }
 
 .dietary-input {
+  width: 100%;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem;
-  background-color: white;
-  border-radius: 4px;
+  border: 1px solid #eee;
+  border-radius: 6px;
   margin-bottom: 1rem;
-  border: 1px solid #9caf88;
 }
 
 .dietary-input label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: pointer;
-  color: #332c2a;
 }
 
-.dietary-input input[type="checkbox"] {
-  width: 1.2rem;
-  height: 1.2rem;
-  cursor: pointer;
-  accent-color: #9caf88;
+.children-inputs {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 
-.success-message {
-  text-align: center;
-  color: #2e7d32;
-  padding: 2rem;
-  background-color: rgba(46, 125, 50, 0.1);
-  border-radius: 4px;
-  border: 1px solid rgba(46, 125, 50, 0.2);
-}
-
-.success-message h2 {
-  color: #2e7d32;
-  margin: 0;
-}
-
-.rsvp-page-wrapper {
-  min-height: calc(100vh - 200px);
-  background-color: #332c2a;
-  padding: 1rem;
-}
-
-@media (max-width: 768px) {
+/* Responsive Design */
+@media (min-width: 768px) {
   .rsvp-form {
-    margin: 1rem;
-    padding: 1rem;
+    padding: 3rem;
   }
 
-  .rsvp-page-wrapper {
-    min-height: calc(100vh - 100px);
-    padding: 0;
+  .dietary-input {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .button-group {
-    flex-direction: column;
+  .dietary-input input[type="text"] {
+    width: 60%;
   }
 
-  .button-group button {
-    width: 100%;
+  .children-inputs button {
+    align-self: flex-start;
   }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rsvp-form > * {
+  animation: fadeIn 0.3s ease-out;
 }
