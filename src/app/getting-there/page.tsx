@@ -63,7 +63,7 @@ export default function GettingThere() {
             <ul>
               <li>
                 <Hotel
-                  hotelUrl="https://marechiaro.net/en/"
+                  hotelUrl="https://www.hotelmarechiarogizzeria.com/"
                   target="_blank"
                   hotelName="Marechiaro"
                   hotelDistance="7.4mi"
@@ -86,29 +86,20 @@ export default function GettingThere() {
             <ul>
               <li>
                 <Hotel
-                  hotelUrl="https://www.booking.com/hotel/it/acqua-marina-amp-restaurant.html"
-                  target="_blank"
-                  hotelName="Acquamarina Hotel"
-                  hotelDistance="984 ft"
-                  googleMapsUrl="https://www.google.com/travel/search?q=Acquamarina%20hotel%20calabria&g2lb=4814050%2C4893075%2C4965990%2C4969803%2C72277293%2C72302247%2C72317059%2C72406588%2C72414906%2C72421566%2C72471280%2C72472051%2C72481459%2C72485658%2C72499705%2C72614662%2C72616120%2C72619927%2C72647020%2C72648289%2C72658035%2C72686036%2C72741943%2C72749231%2C72760082%2C72778251%2C72808078%2C72825294&hl=en-US&gl=us&cs=1&ssta=1&ts=CAEaRwopEicyJTB4MTMzZmRkZGU4NWNiNzc0MzoweGJmYjJlODkwOWQwYTBiZTESGhIUCgcI6A8QCxgZEgcI6A8QCxgaGAEyAhAA&qs=CAEyFENnc0k0WmVvNkltU3V0bV9BUkFCOAJCCQnhCwqdkOiyv0IJCeELCp2Q6LK_&ap=ugEHcmV2aWV3cw&ictx=111&ved=0CAAQ5JsGahcKEwiQ2PmjyvOJAxUAAAAAHQAAAAAQBQ"
-                />
-              </li>
-              <li>
-                <Hotel
-                  hotelUrl="https://www.hotel-palace.it/"
-                  target="_blank"
-                  hotelName="Hotel Palace"
-                  hotelDistance="1.2 mi"
-                  googleMapsUrl="https://www.google.com/travel/search?q=Palace%20Hotel%20calabria&g2lb=4814050%2C4893075%2C4965990%2C4969803%2C72277293%2C72302247%2C72317059%2C72406588%2C72414906%2C72421566%2C72471280%2C72472051%2C72481459%2C72485658%2C72499705%2C72614662%2C72616120%2C72619927%2C72647020%2C72648289%2C72658035%2C72686036%2C72741943%2C72749231%2C72760082%2C72778251%2C72808078%2C72825294&hl=en-US&gl=us&cs=1&ssta=1&ts=CAEaHhIcEhQKBwjoDxALGBkSBwjoDxALGBoYATIECAAQACoHCgU6A1VTRA&qs=CAEyFENnc0k0TUhUeVA3XzBxT0RBUkFCOAhCCRGMMsqPJZuTKUIJEfNDgy1CKIPZQgkRlkVbqdiRl2FaVwgBMlOqAVAQASoQIgxwYWxhY2UgaG90ZWwoADIfEAEiG8PBA3_hZGmqtoNcYq4iY-BojM2iB4qZ-JwmfTIZEAIiFXBhbGFjZSBob3RlbCBjYWxhYnJpYWocChoNXA_IQhITCJG_k-bM84kDFbLuOgcd_6kONA&ap=MABoAboBB3Jldmlld3M&ictx=111&ved=0CAAQ5JsGahcKEwjIo9XpzPOJAxUAAAAAHQAAAAAQSA"
-                />
-              </li>
-              <li>
-                <Hotel
                   hotelUrl="https://www.lionshotel.it/"
                   target="_blank"
                   hotelName="Lion's Hotel"
                   hotelDistance="1.2 mi"
                   googleMapsUrl="https://www.google.com/travel/search?q=Hotel%20Lions%20calabria&g2lb=4814050%2C4893075%2C4965990%2C4969803%2C72277293%2C72302247%2C72317059%2C72406588%2C72414906%2C72421566%2C72471280%2C72472051%2C72481459%2C72485658%2C72499705%2C72614662%2C72616120%2C72619927%2C72647020%2C72648289%2C72658035%2C72686036%2C72741943%2C72749231%2C72760082%2C72778251%2C72808078%2C72825294&hl=en-US&gl=us&cs=1&ssta=1&ts=CAEaRwopEicyJTB4MTMzZmRkNmI4NzUyZjYwOToweDkzOGE5ZjZmZDg5Nzk0OTkSGhIUCgcI6Q8QARgFEgcI6Q8QARgGGAEyAhAA&qs=CAEyFENnc0l5YkxleFAzdHA4V1RBUkFCOAJCCQlJmZfYb5-Kk0IJCUmZl9hvn4qT&ap=ugEHcmV2aWV3cw&ictx=111&ved=0CAAQ5JsGahcKEwj4-pm3zfOJAxUAAAAAHQAAAAAQBQ"
+                />
+              </li>
+                            <li>
+                <Hotel
+                  hotelUrl="https://www.booking.com/hotel/it/palace-una-nuova-strada.html?aid=356980&label=gog235jc-1DCAsocUIXcGFsYWNlLXVuYS1udW92YS1zdHJhZGFIM1gDaJMCiAECmAExuAEHyAEN2AED6AEB-AECiAIBqAIDuAKi14u8BsACAdICJGQ3YjAxMmNiLThlNWYtNDIwNC1hZDYwLWUyYjMxYzIwNmQ0ZNgCBOACAQ&sid=9fda86aefe54ed276566dc26c82d30ce&all_sr_blocks=33462102_88171572_0_42_0&checkin=2025-07-02&checkout=2025-07-04&dest_id=-123080&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=33462102_88171572_0_42_0&hpos=1&matching_block_id=33462102_88171572_0_42_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=33462102_88171572_0_42_0__14450&srepoch=1736633253&srpvid=29069b91da6d055d&type=total&ucfs=1&/"
+                  target="_blank"
+                  hotelName="Palace Hotel Una Nuova Strada"
+                  hotelDistance="1.2 mi"
+                  googleMapsUrl="https://www.google.com/travel/search?q=Palace%20Hotel%20Una%20Nuova%20Strada&g2lb=4965990%2C4969803%2C72277293%2C72302247%2C72317059%2C72406588%2C72414906%2C72421566%2C72471280%2C72472051%2C72481459%2C72485658%2C72499705%2C72560029%2C72573224%2C72614662%2C72616120%2C72619927%2C72647020%2C72648289%2C72658035%2C72686036%2C72760082%2C72803964%2C72808078%2C72825294%2C72832976%2C72847697%2C72855368&hl=en-US&gl=us&cs=1&ssta=1&ts=CAEaSQopEicyJTB4MTMzZmRkMmQxMjViYmEzYjoweGEzMzExMjQ3YjVjMmUyNGUSHBIUCgcI6Q8QARgQEgcI6Q8QARgRGAEyBAgAEAAqBwoFOgNVU0Q&qs=CAEyFENnc0l6c1NMcnZ2SXhKaWpBUkFCOAJCCQlO4sK1RxIxo0IJCU7iwrVHEjGjSAA&ap=MAC6AQdyZXZpZXdz&ictx=111"
                 />
               </li>
             </ul>
