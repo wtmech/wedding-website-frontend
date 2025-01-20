@@ -1,6 +1,7 @@
 'use client';
 
-import Link from "next/link";
+import LocaleLink from "@/components/base/link/LocaleLink";
+import { useTranslation } from '@/hooks/useTranslation';
 import { NavigationProps } from "./types";
 import "./Navigation.css";
 
@@ -9,28 +10,30 @@ function Navigation({
   onClose = () => console.warn('onClose handler is not provided'),
   className = ''
 }: NavigationProps) {
+  const { t } = useTranslation();
+
   return (
     <nav className={`mobile-menu ${isOpen ? 'open' : ''} ${className}`.trim()}>
       <ul>
         <li>
-          <Link href="/" onClick={onClose}>
-            Home
-          </Link>
+          <LocaleLink href="/" className="nav-link" onClick={onClose}>
+            {t.navigation.home}
+          </LocaleLink>
         </li>
         <li>
-          <Link href="/getting-there" onClick={onClose}>
-            Getting There/Lodging
-          </Link>
+          <LocaleLink href="/getting-there" className="nav-link" onClick={onClose}>
+            {t.navigation.gettingThere}
+          </LocaleLink>
         </li>
         <li>
-          <Link href="/things-to-do-in-calabria" onClick={onClose}>
-            Things to Do in Calabria
-          </Link>
+          <LocaleLink href="/things-to-do-in-calabria" className="nav-link" onClick={onClose}>
+            {t.navigation.thingsToDo}
+          </LocaleLink>
         </li>
         <li>
-          <Link href="/rsvp" onClick={onClose}>
-            RSVP
-          </Link>
+          <LocaleLink href="/rsvp" className="nav-link" onClick={onClose}>
+            {t.navigation.rsvp}
+          </LocaleLink>
         </li>
       </ul>
     </nav>

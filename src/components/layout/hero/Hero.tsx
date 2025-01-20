@@ -4,10 +4,12 @@ import Image from 'next/image';
 import Pill from '@/components/base/pill/Pill';
 import Countdown from '@/components/base/countdown/Countdown';
 import Heading from '@/components/base/heading/Heading';
+import { useTranslation } from '@/hooks/useTranslation';
 import { HeroProps } from './types';
 import "./Hero.css";
 
 function Hero({ imageUrl, title, subtitle }: HeroProps) {
+  const { t } = useTranslation();
   const weddingDate = "2025-07-03T18:30:00+02:00";
 
   return (
@@ -17,20 +19,18 @@ function Hero({ imageUrl, title, subtitle }: HeroProps) {
         {title && subtitle && (
           <div className="hero-title">
             <Heading level={2}>{title}</Heading>
-            <span className="ampersand">&</span>
-            <Heading level={2}>{subtitle}</Heading>
           </div>
         )}
         <Pill
-          date="July 3, 2025"
+          date={t.home.weddingDetails.date.value}
           day="Thursday"
-          time="6:00pm"
-          location="Villa Grandinetti"
+          time={t.home.weddingDetails.date.time}
+          location={t.home.weddingDetails.venue.name}
         />
       </div>
       <Image
         src={imageUrl}
-        alt="Hero Image"
+        alt="Billy and Katia's Wedding"
         fill
         priority
         className="hero-image"

@@ -26,7 +26,7 @@
   border: 1px solid #1B4332;
   border-radius: 20px;
   text-decoration: none;
-  color: #f0f0f2;
+  color: #1B4332;
   font-weight: 600;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -87,6 +87,7 @@
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    margin-right: 1rem;
   }
 
   .header-nav a {
@@ -156,6 +157,31 @@
 
   .header nav {
     padding-right: 0;
+  }
+}
+
+/* Mobile Controls */
+.mobile-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 10px;
+}
+
+@media (min-width: 768px) {
+  .mobile-controls {
+    display: none;
+  }
+}
+
+/* Desktop/Mobile visibility */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-only {
+    display: block;
   }
 }
 

@@ -1,0 +1,156 @@
+{
+  "common": {
+    "at": "alle",
+    "and": "o",
+    "back": "Indietro",
+    "continue": "Continua"
+  },
+  "navigation": {
+    "home": "Home",
+    "gettingThere": "Come Arrivare",
+    "thingsToDo": "Cose da Fare",
+    "rsvp": "RSVP",
+    "menuButton": "Menu"
+  },
+  "home": {
+    "countdown": {
+      "days": "Giorni",
+      "hours": "Ore",
+      "minutes": "Minuti",
+      "seconds": "Secondi"
+    },
+    "weddingDetails": {
+      "title": "Dettagli del Matrimonio",
+      "date": {
+        "title": "Data",
+        "value": "3 Luglio 2025",
+        "time": "18:00",
+        "dateAndTime": "3 Luglio 2025 alle 18:00"
+      },
+      "venue": {
+        "title": "Luogo della Cerimonia e del Ricevimento",
+        "name": "Villa Grandinetti",
+        "address": "SS 18 Tirrena Inferiore, 7, 88047 Nocera Terinese CZ, Italia"
+      },
+      "dress": {
+        "title": "Abbigliamento",
+        "text": "Abbigliamento formale"
+      }
+    }
+  },
+  "gettingThere": {
+    "title": "Come Arrivare",
+    "byPlane": {
+      "title": "In Aereo",
+      "text": "Consigliamo di volare su",
+      "airport": "Aeroporto Internazionale di Lamezia Terme",
+      "rentalCars": "Sono disponibili auto a noleggio in aeroporto"
+    },
+    "byTrain": {
+      "title": "In Treno",
+      "text": "Da Roma, consigliamo di prendere il treno da",
+      "to": "a",
+      "stations": {
+        "termini": "Roma Termini",
+        "tiburtina": "Roma Tiburtina",
+        "lamezia": "Lamezia Terme Centrale"
+      },
+      "companies": {
+        "text": "Le due compagnie ferroviarie sono",
+        "italo": "Italo",
+        "trenitalia": "Trenitalia"
+      }
+    },
+    "byCar": {
+      "title": "In Auto",
+      "fromCatanzaro": "Circa 42 minuti di guida da Catanzaro via SS280 dei Due Mari/E848 e A2/E45.",
+      "fromMagisano": "Circa 1 ora e 5 minuti di guida da Magisano via SS280 dei Due Mari/E848.",
+      "googleMaps": "Google Maps"
+    },
+    "accommodation": {
+      "title": "Dove pernottare",
+      "distanceNote": "(Tutte le distanze sono in relazione alla location del matrimonio)",
+      "categories": {
+        "fourStar": "Hotel 4 Stelle",
+        "threeStar": "Hotel 3 Stelle",
+        "bedAndBreakfast": "Bed and Breakfast"
+      },
+      "emailToBook": "Email {email} per prenotare le camere per il matrimonio di Katia e Billy"
+    }
+  },
+  "thingsToDo": {
+    "title": "Cose da Fare in Calabria",
+    "coastOfGods": {
+      "title": "\"Costa degli Dei\"",
+      "text": "Non puoi perderti la Costa degli Dei quando sei in Calabria! Molto vicino alla location del nostro matrimonio, questo posto mozzafiato è tutto incentrato su spiagge meravigliose e viste meravigliose. Rinomato per le sue acque cristalline e le scogliere spettacolari, questo paradiso costiero presenta spiagge idilliache come quelle di Tropea, Capo Vaticano, Pizzo, Briatico e Zambrone, dove la sabbia soffice incontra il mare azzurro. Esplora il vivace centro storico di Tropea, dove troverai strade affascinanti e delizioso cibo locale: assicurati di provare le famose cipolle rosse! Se passi da Pizzo, non perderti il suo rinomato tartufo! E per un'esperienza piu' riservata dai un'occhiata alle calette nascoste lungo la costa, come Paradiso del Sub e Spiaggia di Michelino."
+    },
+    "scilla": {
+      "title": "Scilla",
+      "text": "Proseguendo verso sud lungo la costa tirrenica, scoprirai Scilla, un pittoresco villaggio di pescatori dove potrai gustare pesce fresco e viste mozzafiato: in una giornata limpida, potresti persino avvistare la Sicilia dall'altra parte del mare! Prenditi del tempo per passeggiare tra le sue strette vie e immergerti nelle leggende locali."
+    },
+    "sanNicolaArcella": {
+      "title": "San Nicola Arcella",
+      "text": "Se avete tempo, visitate San Nicola Arcella, un piccolo paese che si affaccia sul versante settentrionale del Mar Tirreno, che offre viste spettacolari sul Golfo di Policastro, dall'Isola di Dino a Palinuro. L'antica torre di guardia chiamata Torre Crawford e il magnifico arco roccioso soprannominato Arco Magno meritano assolutamente una visita!"
+    },
+    "ionianCoast": {
+      "title": "La costa ionica",
+      "text": "La costa ionica ha i suoi tesori, come Soverato, conosciuta come 'La Perla dello Ionio', e le bellissime spiagge di Caminia e Pietragrande. Non dimenticare Le Castella, dove potete esplorare il Castello Aragonese in mezzo al mare!"
+    },
+    "nationalParks": {
+      "title": "Parchi Nazionali e altro",
+      "text": "C'è molto di più da scoprire oltre alle spiagge! La bellezza selvaggia del Parco Nazionale della Sila è perfetta per le escursioni, mentre il Parco Nazionale del Pollino presenta paesaggi mozzafiato. Gli amanti della storia apprezzeranno le antiche rovine greche di Locri, che riflettono il ricco patrimonio della regione, e l'affascinante città medievale di Gerace, sede di un imponente castello normanno. Infine, sulla 'punta dello stivale', Reggio Calabria vanta un grazioso lungomare e i famosi Bronzi di Riace, due incredibili statue greche antiche conservate nel Museo archeologico nazionale."
+    }
+  },
+  "rsvp": {
+    "title": "RSVP",
+    "form": {
+      "fullName": "Nome e Cognome",
+      "search": "Cerca",
+      "attending": {
+        "question": "Parteciperai al matrimonio?",
+        "yes": "Si",
+        "no": "No"
+      },
+      "plusOne": {
+        "question": "{name} parteciperà con te?",
+        "newQuestion": "Vorresti portare un accompagnatore?",
+        "enterName": "Inserisci il Nome Completo del Tuo Accompagnatore",
+        "namePlaceholder": "Nome Completo dell'Accompagnatore",
+        "yes": "Sì",
+        "no": "No"
+      },
+      "children": {
+        "question": "Porterai dei bambini?",
+        "enterNames": "Inserisci i Nomi dei Bambini",
+        "addChild": "Aggiungi Bambino",
+        "childPlaceholder": "Bambino",
+        "yes": "Sì",
+        "no": "No",
+        "howMany": "Quanti bambini?"
+      },
+      "dietary": {
+        "question": "Qualcuno del tuo gruppo ha restrizioni alimentari o preferisce non mangiare pesce?",
+        "seafoodNote": "Il menu sarà principalmente a base di pesce. Per favore, facci sapere se qualcuno ha bisogno di un'alternativa.",
+        "title": "Restrizioni Alimentari",
+        "instructions": "Il menu del matrimonio includerà pesce. Seleziona solo le caselle per gli ospiti che hanno allergie al pesce, altre restrizioni alimentari o preferiscono un menu senza pesce. Se hai bambini, indica se desiderano un menu per bambini.",
+        "detailsPlaceholder": "Inserisci eventuali restrizioni alimentari o allergie. Se desideri un menu senza pesce, specificalo qui.",
+        "yes": "Sì",
+        "no": "No"
+      },
+      "additionalNotes": {
+        "question": "Vorresti aggiungere delle note aggiuntive? (Opzionale)",
+        "placeholder": "Note Aggiuntive"
+      },
+      "submit": "Completa RSVP",
+      "success": {
+        "attending": "Grazie per il tuo RSVP! Non vediamo l'ora di festeggiare con te!",
+        "notAttending": "Grazie per avercelo fatto sapere. Ci dispiace che non potrai essere presente!"
+      },
+      "error": {
+        "emptyName": "Per favore inserisci il tuo nome completo",
+        "nameNotFound": "Non troviamo il tuo nome nella lista degli invitati. Se pensi che ci sia un errore, contattaci direttamente per l'RSVP:",
+        "alreadyRsvped": "Hai già inviato il tuo RSVP come {status}. Se hai bisogno di apportare modifiche, contatta direttamente Billy o Katia."
+      }
+    }
+  }
+}

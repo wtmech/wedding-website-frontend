@@ -1,0 +1,156 @@
+{
+  "common": {
+    "at": "at",
+    "and": "and",
+    "back": "Back",
+    "continue": "Continue"
+  },
+  "navigation": {
+    "home": "Home",
+    "gettingThere": "Getting There",
+    "thingsToDo": "Things to Do",
+    "rsvp": "RSVP",
+    "menuButton": "Menu"
+  },
+  "home": {
+    "countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "weddingDetails": {
+      "title": "Wedding Details",
+      "date": {
+        "title": "Date",
+        "value": "July 3, 2025",
+        "time": "6:00pm",
+        "dateAndTime": "July 3, 2025 at 6:00pm"
+      },
+      "venue": {
+        "title": "Ceremony & Reception Venue",
+        "name": "Villa Grandinetti",
+        "address": "SS 18 Tirrena Inferiore, 7, 88047 Nocera Terinese CZ, Italy"
+      },
+      "dress": {
+        "title": "Dress",
+        "text": "Formal Attire"
+      }
+    }
+  },
+  "gettingThere": {
+    "title": "Getting There",
+    "byPlane": {
+      "title": "By Plane",
+      "text": "We recommend flying into",
+      "airport": "Lamezia Terme International Airport",
+      "rentalCars": "Rental cars are available at the airport"
+    },
+    "byTrain": {
+      "title": "By Train",
+      "text": "From Rome, we recommend taking the train from",
+      "to": "to",
+      "stations": {
+        "termini": "Rome Termini",
+        "tiburtina": "Roma Tiburtina",
+        "lamezia": "Lamezia Terme Centrale"
+      },
+      "companies": {
+        "text": "The two train companies are",
+        "italo": "Italo",
+        "trenitalia": "Trenitalia"
+      }
+    },
+    "byCar": {
+      "title": "By Car",
+      "fromCatanzaro": "About 42 minutes driving from Catanzaro via SS280 dei Due Mari/E848 and A2/E45.",
+      "fromMagisano": "About 1 hour and 5 minutes driving from Magisano via SS280 dei Due Mari/E848.",
+      "googleMaps": "Google Maps"
+    },
+    "accommodation": {
+      "title": "Where to Stay",
+      "distanceNote": "(All distances are in relation to the venue)",
+      "categories": {
+        "fourStar": "Four Star Hotels",
+        "threeStar": "Three Star Hotels",
+        "bedAndBreakfast": "Bed and Breakfast"
+      },
+      "emailToBook": "Email {email} to book"
+    }
+  },
+  "thingsToDo": {
+    "title": "Things to Do in Calabria",
+    "coastOfGods": {
+      "title": "\"Coast of the Gods\"",
+      "text": "You can't miss Costa degli Dei, or 'Coast of the Gods,' when you're in Calabria! Very close to our wedding venue, this breathtaking spot is all about stunning beaches and beautiful views. Renowned for its crystal-clear waters and dramatic cliffs, this coastal paradise features idyllic beaches like those in Tropea, Capo Vaticano, Pizzo, Briatico, and Zambrone, where soft sands meet the azure sea. Explore the vibrant old town of Tropea, where you'll find charming streets and delicious local food—make sure to try the famous red onions! If you swing by Pizzo, don't miss out on its renowned tartufo ice cream! And for a more secluded beach experience, check out the hidden coves along the coast, like Paradiso del Sub and Spiaggia di Michelino.."
+    },
+    "scilla": {
+      "title": "Scilla",
+      "text": "Heading south along the Tyrrhenian coast, you'll discover Scilla, a picturesque fishing village where you can enjoy fresh seafood and stunning views—on a clear day, you might even spot Sicily across the water! Take some time to wander its narrow streets and soak up the local legends."
+    },
+    "sanNicolaArcella": {
+      "title": "San Nicola Arcella",
+      "text": "If you have time, visit San Nicola Arcella, a small town overlooking the northern side of the Tyrrhenian Sea, which offers spectacular views of the Gulf of Policastro, from Dino Island to Palinuro. The ancient watchtower called Torre Crawford and the magnificent rocky arch nicknamed Arco Magno are absolutely worth a visit!"
+    },
+    "ionianCoast": {
+      "title": "The Ionian coast",
+      "text": "The Ionian coast has its own treasures, like Soverato, known as 'The Pearl of the Ionian,' and the beautiful beaches at Caminia and Pietragrande. Don't forget Le Castella, where you can explore the Aragonese Castle by the sea!"
+    },
+    "nationalParks": {
+      "title": "National Parks and more",
+      "text": "There's so much more to discover beyond the beaches! The wild beauty of Sila National Park is perfect for hiking, while Pollino National Park showcases stunning landscapes. History lovers will appreciate the ancient Greek ruins at Locri, reflecting the region's rich heritage, and the charming medieval town of Gerace, home to an impressive Norman castle. Finally, at the \"tip of the boot,\" Reggio Calabria features a lovely seafront and the famous Riace Bronzes—two incredible ancient Greek statues preserved in the National Archaeological Museum."
+    }
+  },
+  "rsvp": {
+    "title": "RSVP",
+    "form": {
+      "fullName": "Please Enter Your Full Name",
+      "search": "Search",
+      "attending": {
+        "question": "Will you be attending the wedding?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "plusOne": {
+        "question": "Will {name} be joining you?",
+        "newQuestion": "Would you like to bring a plus one?",
+        "enterName": "Please Enter Your Plus One's Full Name",
+        "namePlaceholder": "Plus One's Full Name",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "children": {
+        "question": "Will you be bringing any children?",
+        "enterNames": "Please Enter Your Children's Names",
+        "addChild": "Add Child",
+        "childPlaceholder": "Child",
+        "yes": "Yes",
+        "no": "No",
+        "howMany": "How many children?"
+      },
+      "dietary": {
+        "question": "Does anyone in your party have dietary restrictions or prefer not to eat seafood?",
+        "seafoodNote": "The menu will be primarily seafood-based. Please let us know if anyone needs an alternative.",
+        "title": "Dietary Restrictions",
+        "instructions": "The wedding menu will feature seafood. Please only check the boxes for guests who have seafood allergies, other dietary restrictions, or prefer a non seafood menu. If you have children, please indicate if they want a kids menu.",
+        "detailsPlaceholder": "Please enter any dietary restrictions or allergies. If you would like a non seafood menu, please specify here.",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "additionalNotes": {
+        "question": "Would you like to add any additional notes? (Optional)",
+        "placeholder": "Additional Notes"
+      },
+      "submit": "Complete RSVP",
+      "success": {
+        "attending": "Thank you for your RSVP! We look forward to celebrating with you!",
+        "notAttending": "Thank you for letting us know. We're sorry you won't be able to join us!"
+      },
+      "error": {
+        "emptyName": "Please enter your full name",
+        "nameNotFound": "We don't see your name on the invite list. If you think this is an error, please contact us directly to RSVP:",
+        "alreadyRsvped": "You have already RSVP'd as {status}. If you need to make changes, please contact Billy or Katia directly."
+      }
+    }
+  }
+}

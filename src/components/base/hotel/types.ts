@@ -4,4 +4,5 @@ export interface HotelProps {
   hotelName: string;
   hotelDistance: string;
   googleMapsUrl: string;
+  bookingEmail?: string;
 }

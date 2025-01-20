@@ -6,12 +6,31 @@ import { endpoints } from '@/config/api';
 import Accordion from '@/components/base/accordion/Accordion';
 import './InviteList.css';
 
+interface Rsvp {
+  _id: string;
+  fullName: string;
+  attending: boolean;
+  plusOne?: {
+    fullName: string;
+    attending?: boolean;
+    dietaryRestrictions?: string;
+  };
+  children?: Array<{
+    name: string;
+    age?: number;
+    dietaryRestrictions?: string;
+  }>;
+  dietaryRestrictions?: string;
+  additionalNotes?: string;
+  respondedAt: Date | string;
+}
+
 interface Invite {
   _id: string;
   fullName: string;
   possiblePlusOne?: string;
   guestOf: 'bride' | 'groom';
-  rsvp: string | null;
+  rsvp: Rsvp | null;
 }
 
 export default function InviteList() {
@@ -46,6 +65,82 @@ export default function InviteList() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const formatDate = (date: Date | string) => {
+    try {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      if (isNaN(dateObj.getTime())) {
+        return 'Invalid Date';
+      }
+      return dateObj.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid Date';
+    }
+  };
+
+  const renderRsvpDetails = (rsvp: Rsvp) => {
+    return (
+      <div className="rsvp-details">
+        <div className="rsvp-status">
+          <span className={`status-icon ${rsvp.attending ? 'attending' : 'not-attending'}`}>
+            {rsvp.attending ? '✓' : '✗'}
+          </span>
+          <span className="status-text">
+            {rsvp.attending ? 'Attending' : 'Not Attending'}
+          </span>
+        </div>
+
+        {rsvp.plusOne && (
+          <div className="rsvp-plus-one">
+            <h4>Plus One</h4>
+            <p>{rsvp.plusOne.fullName}</p>
+            {rsvp.plusOne.dietaryRestrictions && (
+              <p className="dietary">Dietary: {rsvp.plusOne.dietaryRestrictions}</p>
+            )}
+          </div>
+        )}
+
+        {rsvp.children && rsvp.children.length > 0 && (
+          <div className="rsvp-children">
+            <h4>Children</h4>
+            {rsvp.children.map((child, index) => (
+              <div key={index} className="child-details">
+                <p>{child.name}</p>
+                {child.dietaryRestrictions && (
+                  <p className="dietary">Dietary: {child.dietaryRestrictions}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {rsvp.dietaryRestrictions && (
+          <div className="rsvp-dietary">
+            <h4>Dietary Restrictions</h4>
+            <p>{rsvp.dietaryRestrictions}</p>
+          </div>
+        )}
+
+        {rsvp.additionalNotes && (
+          <div className="rsvp-notes">
+            <h4>Additional Notes</h4>
+            <p>{rsvp.additionalNotes}</p>
+          </div>
+        )}
+
+        <div className="rsvp-date">
+          <p>Responded: {formatDate(rsvp.respondedAt)}</p>
+        </div>
+      </div>
+    );
   };
 
   if (isLoading) {
@@ -112,13 +207,14 @@ export default function InviteList() {
                 <span className="guest-name">{invite.fullName}</span>
                 {invite.possiblePlusOne && (
                   <span className="plus-one">
-                    +1: {invite.possiblePlusOne}
+                    Possible +1: {invite.possiblePlusOne}
                   </span>
                 )}
+                {invite.rsvp && renderRsvpDetails(invite.rsvp)}
               </div>
-              <span className={`status-badge ${invite.rsvp ? 'confirmed' : 'pending'}`}>
-                {invite.rsvp ? 'Confirmed' : 'Pending'}
-              </span>
+              {!invite.rsvp && (
+                <span className="status-badge pending">Pending</span>
+              )}
             </div>
           ))}
         </div>
@@ -132,13 +228,14 @@ export default function InviteList() {
                 <span className="guest-name">{invite.fullName}</span>
                 {invite.possiblePlusOne && (
                   <span className="plus-one">
-                    +1: {invite.possiblePlusOne}
+                    Possible +1: {invite.possiblePlusOne}
                   </span>
                 )}
+                {invite.rsvp && renderRsvpDetails(invite.rsvp)}
               </div>
-              <span className={`status-badge ${invite.rsvp ? 'confirmed' : 'pending'}`}>
-                {invite.rsvp ? 'Confirmed' : 'Pending'}
-              </span>
+              {!invite.rsvp && (
+                <span className="status-badge pending">Pending</span>
+              )}
             </div>
           ))}
         </div>

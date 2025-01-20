@@ -8,7 +8,8 @@ function Hotel({
   target,
   hotelName,
   hotelDistance,
-  googleMapsUrl
+  googleMapsUrl,
+  bookingEmail
 }: HotelProps) {
   return (
     <div className="hotel">
@@ -21,6 +22,11 @@ function Hotel({
         >
           {hotelName}
         </a>
+        {bookingEmail && (
+          <span className="booking-info">
+            (Email <a href={`mailto:${bookingEmail}`} className="hotel-link">{bookingEmail}</a> to book for Katia and Billy&apos;s wedding.)
+          </span>
+        )}
       </div>
       <div className="hotel-distance">
         <span>{hotelDistance}</span>

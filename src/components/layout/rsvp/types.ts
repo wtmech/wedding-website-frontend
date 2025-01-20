@@ -7,7 +7,6 @@ export interface Invite {
   rsvp: 'attending' | 'not-attending' | null;
   children?: Child[];
   dietaryRestrictions?: DietaryRestriction[];
-  email?: string;
 }
 
 export interface Child {
@@ -21,7 +20,6 @@ export interface DietaryRestriction {
 
 export interface RsvpFormData {
   fullName: string;
-  email?: string;
   isAttending?: boolean;
   keepingPlusOne?: boolean;
   newPlusOne?: string;
@@ -32,12 +30,12 @@ export interface RsvpFormData {
   plusOneDietaryRestrictions?: string[];
   plusOne?: string;
   customPlusOne?: string;
+  additionalNotes?: string;
 }
 
 export interface RsvpPayload {
   invitation: string;
   fullName: string;
-  email?: string;
   attending: boolean;
   plusOne?: {
     fullName?: string;

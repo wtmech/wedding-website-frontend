@@ -6,76 +6,64 @@ import { images } from '@/config/images';
 import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
 import Heading from '@/components/base/heading/Heading'
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface WeddingDetail {
   title: string;
-  date?: string;
+  value: string;
   time?: string;
-  name?: string;
-  address?: string;
-  text?: string;
-}
-
-interface WeddingDetails {
-  [key: string]: WeddingDetail;
+  dateAndTime?: string;
 }
 
 export default function Home() {
+  const { t } = useTranslation();
+
   useEffect(() => {
     warmupServer();
   }, []);
 
-  const weddingDetails = {
-    date: {
-      title: "Date",
-      date: "July 3, 2025",
-      time: "6:00pm"
+  const weddingDetails: WeddingDetail[] = [
+    {
+      title: t.home.weddingDetails.date.title,
+      value: t.home.weddingDetails.date.dateAndTime,
+      time: t.home.weddingDetails.date.time
     },
-    venue: {
-      title: "Ceremony & Reception Venue",
-      name: "Villa Grandinetti",
-      address: "SS 18 Tirrena Inferiore, 7, 88047 Nocera Terinese CZ, Italy"
+    {
+      title: t.home.weddingDetails.venue.title,
+      value: `${t.home.weddingDetails.venue.name}, ${t.home.weddingDetails.venue.address}`,
     },
-    dress: {
-      title: "Dress",
-      text: "Formal Attire"
-    }
-  }
-
-  const renderDetails = (details: WeddingDetails) => (
-  <div className="details-section">
-    {Object.entries(details).map(([key, value]: [string, WeddingDetail]) => (
-      <div key={key}>
-        <Heading level={3} color="#FFECD9">{value.title}</Heading>
-        {value.date && <p>{value.date} at {value.time}</p>}
-        {value.name && <p>{value.name}</p>}
-        {value.address && <p>{value.address}</p>}
-        {value.text && <p>{value.text}</p>}
-      </div>
-    ))}
-  </div>
-);
+    {
+      title: t.home.weddingDetails.dress.title,
+      value: t.home.weddingDetails.dress.text,
+    },
+  ];
 
   return (
-    <main>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Hero
         imageUrl={images.proposal}
-        title="Billy"
-        subtitle="Katia"
+        title="Billy & Katia"
+        subtitle={`${t.home.weddingDetails.date.value} ${t.common.at} ${t.home.weddingDetails.date.time}`}
       />
       <Content backgroundColor="#332c2a">
-        <div className="text-image-block right">
+        <div className="text-image-block">
           <div className="text-image-block__content">
             <div className="text-image-block__text">
-              <Heading level={2} color="#FFECD9">Wedding Details</Heading>
-              {renderDetails(weddingDetails)}
+              <Heading level={2} color="#FFECD9">{t.home.weddingDetails.title}</Heading>
+              {weddingDetails.map((detail, index) => (
+                <div key={index} className="mb-8 text-block">
+                  <h3 className="text-xl font-semibold mb-2">{detail.title}</h3>
+                  {detail.title === t.home.weddingDetails.venue.title ? (
+                    <>
+                      <p className="text-lg">{t.home.weddingDetails.venue.name}</p>
+                      <p className="text-lg">{t.home.weddingDetails.venue.address}</p>
+                    </>
+                  ) : (
+                    <p className="text-lg">{detail.value}</p>
+                  )}
+                </div>
+              ))}
             </div>
-            <div
-              className="text-image-block__image"
-              style={{ backgroundImage: 'url(/hero.JPEG)' }}
-              role="img"
-              aria-label="Wedding Details"
-            />
           </div>
         </div>
       </Content>

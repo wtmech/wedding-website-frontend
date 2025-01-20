@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import axiosInstance from '@/config/api';
 import { endpoints } from '@/config/api';
+import { useTranslation } from '@/hooks/useTranslation';
 import './RsvpForm.css';
 import { Invite, RsvpFormData, RsvpPayload } from './types';
 
 export default function RsvpForm() {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<RsvpFormData>({
     fullName: '',
@@ -23,7 +25,7 @@ export default function RsvpForm() {
 
     try {
       if (!formData.fullName.trim()) {
-        setError('Please enter your full name');
+        setError(t.rsvp.form.error.emptyName);
         return;
       }
 
@@ -36,11 +38,8 @@ export default function RsvpForm() {
         });
 
       if (response?.data) {
-        if (response.data.rsvp) {
-          setError(
-            `You have already RSVP'd as ${response.data.rsvp === 'attending' ?
-            'attending' : 'not attending'}. If you need to make changes, please contact Billy or Katia directly.`
-          );
+        if (response.data.rsvp !== null) {
+          setError(t.rsvp.form.error.alreadyRsvped.replace('{status}', response.data.rsvp ? 'attending' : 'not attending'));
           return;
         }
         setInvite(response.data);
@@ -50,8 +49,7 @@ export default function RsvpForm() {
       }
     } catch (err) {
       console.error('Name search error:', err);
-      setError(err instanceof Error ? err.message :
-        "Sorry, we can't find your name on the invite list. If you are still having issues, please contact Billy or Katia directly.");
+      setError(t.rsvp.form.error.nameNotFound);
     }
   };
 
@@ -130,7 +128,6 @@ export default function RsvpForm() {
       const payload: RsvpPayload = {
         invitation: invite._id,
         fullName: formData.fullName,
-        email: formData.email || undefined,
         attending: formData.isAttending || false,
         plusOne: formData.keepingPlusOne || formData.newPlusOne ? {
           fullName: formData.keepingPlusOne ? invite.possiblePlusOne : formData.newPlusOne,
@@ -146,10 +143,11 @@ export default function RsvpForm() {
         })),
         dietaryRestrictions: formData.dietaryRestrictions?.find(
           d => d.guestName === formData.fullName
-        )?.restriction
+        )?.restriction,
+        additionalNotes: formData.additionalNotes
       };
 
-
+      console.log('Submitting RSVP:', payload);
       const response = await axiosInstance.post(endpoints.rsvpSubmit, payload);
 
       if (response?.data) {
@@ -236,7 +234,7 @@ export default function RsvpForm() {
   };
 
   // Helper function for the button group
-  const renderButtonGroup = (onSubmit: (e: React.FormEvent) => void, submitText: string = "Continue") => (
+  const renderButtonGroup = (onSubmit: (e: React.FormEvent) => void, submitText?: string) => (
     <div className="button-group">
       {Number(step) !== 1 && (
         <button
@@ -244,10 +242,10 @@ export default function RsvpForm() {
           onClick={handleBackNavigation}
           className="back-button"
         >
-          Back
+          {t.common.back}
         </button>
       )}
-      <button type="submit">{submitText}</button>
+      <button type="submit">{submitText || t.common.continue}</button>
     </div>
   );
 
@@ -255,22 +253,22 @@ export default function RsvpForm() {
     <div className="rsvp-form">
       {Number(step) === 1 && (
         <form onSubmit={handleNameSubmit}>
-          <h2>Please Enter Your Full Name</h2>
+          <h2>{t.rsvp.form.fullName}</h2>
           <input
             type="text"
             value={formData.fullName}
             onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-            placeholder="Full Name"
+            placeholder={t.rsvp.form.fullName}
             required
           />
-          {renderButtonGroup(handleNameSubmit)}
+          {renderButtonGroup(handleNameSubmit, t.rsvp.form.search)}
           {error && <div className="error-message">{error}</div>}
         </form>
       )}
 
       {Number(step) === 2 && (
         <form onSubmit={(e) => e.preventDefault()}>
-          <h2>Will you be attending the wedding?</h2>
+          <h2>{t.rsvp.form.attending.question}</h2>
           <div className="button-group">
             {Number(step) !== 1 && (
               <button
@@ -278,18 +276,21 @@ export default function RsvpForm() {
                 onClick={handleBackNavigation}
                 className="back-button"
               >
-                Back
+                {t.common.back}
               </button>
             )}
-            <button type="button" onClick={() => handleAttendanceChange(true)}>Yes</button>
-            <button type="button" onClick={() => handleAttendanceChange(false)}>No</button>
+            <button type="button" onClick={() => handleAttendanceChange(true)}>{t.rsvp.form.attending.yes}</button>
+            <button type="button" onClick={() => handleAttendanceChange(false)}>{t.rsvp.form.attending.no}</button>
           </div>
         </form>
       )}
 
-      {Number(step) === 3 && invite?.possiblePlusOne && (
+      {Number(step) === 3 && invite && (
         <div className="plus-one-choice">
-          <h2>Will {invite.possiblePlusOne} be joining you?</h2>
+          <h2>{formData.fullName.toLowerCase() === invite.fullName.toLowerCase() ?
+            t.rsvp.form.plusOne.question.replace('{name}', invite.possiblePlusOne || '') :
+            t.rsvp.form.plusOne.question.replace('{name}', invite.fullName)
+          }</h2>
           <div className="button-group">
             {Number(step) !== 1 && (
               <button
@@ -297,18 +298,18 @@ export default function RsvpForm() {
                 onClick={handleBackNavigation}
                 className="back-button"
               >
-                Back
+                {t.common.back}
               </button>
             )}
-            <button type="button" onClick={() => handlePlusOneChoice(true)}>Yes</button>
-            <button type="button" onClick={() => handlePlusOneChoice(false)}>No</button>
+            <button type="button" onClick={() => handlePlusOneChoice(true)}>{t.rsvp.form.plusOne.yes}</button>
+            <button type="button" onClick={() => handlePlusOneChoice(false)}>{t.rsvp.form.plusOne.no}</button>
           </div>
         </div>
       )}
 
       {Number(step) === 4 && (
         <div className="plus-one-choice">
-          <h2>Would you like to bring a plus one?</h2>
+          <h2>{t.rsvp.form.plusOne.newQuestion}</h2>
           <div className="button-group">
             {Number(step) !== 1 && (
               <button
@@ -316,23 +317,23 @@ export default function RsvpForm() {
                 onClick={handleBackNavigation}
                 className="back-button"
               >
-                Back
+                {t.common.back}
               </button>
             )}
-            <button type="button" onClick={() => handleNewPlusOne(true)}>Yes</button>
-            <button type="button" onClick={() => handleNewPlusOne(false)}>No</button>
+            <button type="button" onClick={() => handleNewPlusOne(true)}>{t.rsvp.form.plusOne.yes}</button>
+            <button type="button" onClick={() => handleNewPlusOne(false)}>{t.rsvp.form.plusOne.no}</button>
           </div>
         </div>
       )}
 
       {Number(step) === 5 && (
         <form onSubmit={handleNewPlusOneName}>
-          <h2>Please Enter Your Plus One&apos;s Full Name</h2>
+          <h2>{t.rsvp.form.plusOne.enterName}</h2>
           <input
             type="text"
             value={formData.newPlusOne || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, newPlusOne: e.target.value }))}
-            placeholder="Plus One's Full Name"
+            placeholder={t.rsvp.form.plusOne.namePlaceholder}
             required
           />
           {renderButtonGroup(handleNewPlusOneName)}
@@ -341,7 +342,7 @@ export default function RsvpForm() {
 
       {Number(step) === 6 && (
         <div className="children-choice">
-          <h2>Will you be bringing any children?</h2>
+          <h2>{t.rsvp.form.children.question}</h2>
           <div className="button-group">
             {Number(step) !== 1 && (
               <button
@@ -349,28 +350,28 @@ export default function RsvpForm() {
                 onClick={handleBackNavigation}
                 className="back-button"
               >
-                Back
+                {t.common.back}
               </button>
             )}
-            <button type="button" onClick={() => handleChildrenChoice(true)}>Yes</button>
-            <button type="button" onClick={() => handleChildrenChoice(false)}>No</button>
+            <button type="button" onClick={() => handleChildrenChoice(true)}>{t.rsvp.form.children.yes}</button>
+            <button type="button" onClick={() => handleChildrenChoice(false)}>{t.rsvp.form.children.no}</button>
           </div>
         </div>
       )}
 
       {Number(step) === 7 && (
         <form onSubmit={handleChildrenNames}>
-          <h2>Please Enter Your Children&apos;s Names</h2>
+          <h2>{t.rsvp.form.children.enterNames}</h2>
           <div className="children-inputs">
             <button type="button" onClick={() => setChildCount(prev => prev + 1)}>
-              Add Child
+              {t.rsvp.form.children.addChild}
             </button>
             {Array.from({ length: childCount }).map((_, index) => (
               <div key={index} className="child-input-row">
                 <div className="input-with-x">
                   <input
                     type="text"
-                    placeholder={`Child ${index + 1} Full Name`}
+                    placeholder={`${t.rsvp.form.children.childPlaceholder} ${index + 1}`}
                     onChange={(e) => {
                       const newChildren = [...(formData.children || [])];
                       newChildren[index] = { fullName: e.target.value };
@@ -400,8 +401,8 @@ export default function RsvpForm() {
 
       {Number(step) === 8 && (
         <div className="dietary-choice">
-          <h2>Does anyone in your party have dietary restrictions or prefer not to eat seafood?</h2>
-          <p>The menu will be primarily seafood-based. Please let us know if anyone needs an alternative.</p>
+          <h2>{t.rsvp.form.dietary.question}</h2>
+          <p>{t.rsvp.form.dietary.seafoodNote}</p>
           <div className="button-group">
             {Number(step) !== 1 && (
               <button
@@ -409,21 +410,20 @@ export default function RsvpForm() {
                 onClick={handleBackNavigation}
                 className="back-button"
               >
-                Back
+                {t.common.back}
               </button>
             )}
-            <button type="button" onClick={() => handleDietaryRestrictions(true)}>Yes</button>
-            <button type="button" onClick={() => handleDietaryRestrictions(false)}>No</button>
+            <button type="button" onClick={() => handleDietaryRestrictions(true)}>{t.rsvp.form.dietary.yes}</button>
+            <button type="button" onClick={() => handleDietaryRestrictions(false)}>{t.rsvp.form.dietary.no}</button>
           </div>
         </div>
       )}
 
       {Number(step) === 9 && (
         <form onSubmit={handleDietaryDetails}>
-          <h2>Dietary Restrictions</h2>
+          <h2>{t.rsvp.form.dietary.title}</h2>
           <p className="dietary-instructions">
-            The wedding menu will feature seafood. Please only check the boxes for guests who have
-            seafood allergies, other dietary restrictions, or prefer a non seafood menu. <br /><br />If you have children, please indicate if they want a kids menu.
+            {t.rsvp.form.dietary.instructions}
           </p>
           {[
             formData.fullName,
@@ -452,7 +452,7 @@ export default function RsvpForm() {
                 {formData.dietaryRestrictions?.find(r => r.guestName === name) && (
                   <textarea
                     value={formData.dietaryRestrictions.find(r => r.guestName === name)?.restriction || ''}
-                    placeholder="Please enter any dietary restrictions or allergies. If you would like a non seafood menu, please specify here."
+                    placeholder={t.rsvp.form.dietary.detailsPlaceholder}
                     onChange={(e) => {
                       const newRestrictions = [...(formData.dietaryRestrictions || [])];
                       const idx = newRestrictions.findIndex(r => r.guestName === name);
@@ -467,39 +467,32 @@ export default function RsvpForm() {
               </div>
             )
           ))}
-          <div className="button-group">
-            <button
-              type="button"
-              onClick={handleBackNavigation}
-              className="back-button"
-            >
-              Back
-            </button>
-            <button type="submit">Continue</button>
-          </div>
+          {renderButtonGroup(handleDietaryDetails)}
         </form>
       )}
 
       {Number(step) === 10 && (
         <form onSubmit={handleEmailSubmit}>
-          <h2>Would you like to provide an email for updates? (Optional)</h2>
-          <input
-            type="email"
-            value={formData.email || ''}
-            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-            placeholder="Email Address"
+          <h2>{t.rsvp.form.additionalNotes.question}</h2>
+          <textarea
+            value={formData.additionalNotes || ''}
+            onChange={(e) => setFormData(prev => ({ ...prev, additionalNotes: e.target.value }))}
+            placeholder={t.rsvp.form.additionalNotes.placeholder}
+            rows={4}
+            className="dietary-textarea"
           />
-          {renderButtonGroup(handleEmailSubmit, "Complete RSVP")}
+          {renderButtonGroup(handleEmailSubmit, t.rsvp.form.submit)}
         </form>
       )}
 
       {Number(step) === 11 && (
         <div className="success-message">
-          {formData.isAttending ? (
-            <h2>Thank you for your RSVP! We look forward to celebrating with you!</h2>
-          ) : (
-            <h2>Thank you for letting us know. We&apos;re sorry you won&apos;t be able to join us!</h2>
-          )}
+          <h2>
+            {formData.isAttending ?
+              t.rsvp.form.success.attending :
+              t.rsvp.form.success.notAttending
+            }
+          </h2>
         </div>
       )}
 
