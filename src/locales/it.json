@@ -1,9 +1,13 @@
 {
   "common": {
     "at": "alle",
-    "and": "o",
+    "and": "e",
     "back": "Indietro",
-    "continue": "Continua"
+    "continue": "Continua",
+    "notFound": {
+      "title": "404",
+      "text": "Pagina non trovata"
+    }
   },
   "navigation": {
     "home": "Home",

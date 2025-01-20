@@ -4,6 +4,10 @@ export interface Translations {
     and: string;
     back: string;
     continue: string;
+    notFound: {
+      title: string;
+      text: string;
+    };
   };
   navigation: {
     home: string;

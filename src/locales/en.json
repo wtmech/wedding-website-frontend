@@ -3,7 +3,11 @@
     "at": "at",
     "and": "and",
     "back": "Back",
-    "continue": "Continue"
+    "continue": "Continue",
+    "notFound": {
+      "title": "404",
+      "text": "Page not found"
+    }
   },
   "navigation": {
     "home": "Home",
