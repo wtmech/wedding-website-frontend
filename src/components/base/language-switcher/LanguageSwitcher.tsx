@@ -8,7 +8,7 @@ const LanguageSwitcher = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { currentLang } = useTranslation();
+  const { lang } = useTranslation();
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = event.target.value;
@@ -29,7 +29,7 @@ const LanguageSwitcher = () => {
     <div className="language-switcher">
       <select
         className="language-select"
-        value={currentLang}
+        value={lang}
         onChange={handleLanguageChange}
       >
         <option value="en">EN</option>
