@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { translations } from '@/locales';
-import type { Translations } from '@/locales/types';
+import { translations } from '../../../locales';
+import type { Translations } from '../../../locales/types';
 
 export function useTranslation() {
   const searchParams = useSearchParams();
