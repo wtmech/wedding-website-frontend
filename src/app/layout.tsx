@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Alice } from 'next/font/google'
-import Header from '@/components/layout/header/Header'
+import dynamic from 'next/dynamic'
 import "./globals.css";
+
+const Header = dynamic(() => import('@/components/layout/header/Header'), {
+  ssr: false
+})
 
 const playfair = Playfair_Display({ subsets: ['latin'] })
 const alice = Alice({
