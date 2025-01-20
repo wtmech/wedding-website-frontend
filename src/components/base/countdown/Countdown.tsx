@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import './Countdown.css';
 
 interface CountdownProps {

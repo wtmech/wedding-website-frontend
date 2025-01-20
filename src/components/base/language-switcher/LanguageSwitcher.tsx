@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import './LanguageSwitcher.css';
 
 const LanguageSwitcher = () => {

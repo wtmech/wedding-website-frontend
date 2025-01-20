@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Pill from '@/components/base/pill/Pill';
 import Countdown from '@/components/base/countdown/Countdown';
 import Heading from '@/components/base/heading/Heading';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import { HeroProps } from './types';
 import "./Hero.css";
 

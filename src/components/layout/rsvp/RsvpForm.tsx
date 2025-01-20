@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import axiosInstance from '@/config/api';
 import { endpoints } from '@/config/api';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import './RsvpForm.css';
 import { Invite, RsvpFormData, RsvpPayload } from './types';
 

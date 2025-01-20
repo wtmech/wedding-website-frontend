@@ -4,7 +4,7 @@ import Content from '@/components/base/content/Content';
 import Heading from '@/components/base/heading/Heading';
 import TextImage from '@/components/base/text-and-image/TextImage';
 import { images } from '@/config/images';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 
 import './page.css';
 

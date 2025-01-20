@@ -1,7 +1,7 @@
 'use client';
 
 import LocaleLink from "@/components/base/link/LocaleLink";
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import { NavigationProps } from "./types";
 import "./Navigation.css";
 

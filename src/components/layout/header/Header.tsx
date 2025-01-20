@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LocaleLink from '@/components/base/link/LocaleLink';
 import Navigation from "@/components/layout/navigation/Navigation";
 import LanguageSwitcher from "@/components/base/language-switcher/LanguageSwitcher";
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 import { HeaderProps } from "./types";
 import './Header.css';
 

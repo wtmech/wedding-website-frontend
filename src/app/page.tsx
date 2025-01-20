@@ -6,7 +6,7 @@ import { images } from '@/config/images';
 import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
 import Heading from '@/components/base/heading/Heading'
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/components/base/translation/TranslationProvider';
 
 interface WeddingDetail {
   title: string;
