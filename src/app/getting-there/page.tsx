@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import Content from '@/components/base/content/Content';
 import Heading from '@/components/base/heading/Heading';
 import Hotel from '@/components/base/hotel/Hotel';
 import TranslationProvider from '@/components/base/translation/TranslationProvider';
 import './page.css';
 
-export default function GettingThere() {
+function GettingThereContent() {
   return (
     <TranslationProvider>
       {(t) => (
@@ -142,5 +143,13 @@ export default function GettingThere() {
         </div>
       )}
     </TranslationProvider>
+  );
+}
+
+export default function GettingThere() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GettingThereContent />
+    </Suspense>
   );
 }
