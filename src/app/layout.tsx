@@ -20,10 +20,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Don't show header on 404 page
+  const is404 = children?.toString().includes('404');
+
   return (
     <html lang="en">
       <body className={`${playfair.className} ${alice.variable}`}>
-        <Header />
+        {!is404 && <Header />}
         {children}
       </body>
     </html>
