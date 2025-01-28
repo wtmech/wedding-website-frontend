@@ -23,6 +23,7 @@ interface Rsvp {
   dietaryRestrictions?: string;
   additionalNotes?: string;
   respondedAt: Date | string;
+  isMainInvitee: boolean;
 }
 
 interface Invite {
@@ -204,10 +205,14 @@ export default function InviteList() {
           {invites.groom.map((invite) => (
             <div key={invite._id} className="guest-item">
               <div className="guest-info">
-                <span className="guest-name">{invite.fullName}</span>
+                <span className="guest-name">
+                  {invite.rsvp ? invite.rsvp.fullName : invite.fullName}
+                </span>
                 {invite.possiblePlusOne && (
                   <span className="plus-one">
-                    Possible +1: {invite.possiblePlusOne}
+                    Possible +1: {invite.rsvp && invite.rsvp.plusOne ?
+                      invite.rsvp.plusOne.fullName :
+                      invite.possiblePlusOne}
                   </span>
                 )}
                 {invite.rsvp && renderRsvpDetails(invite.rsvp)}
@@ -225,10 +230,14 @@ export default function InviteList() {
           {invites.bride.map((invite) => (
             <div key={invite._id} className="guest-item">
               <div className="guest-info">
-                <span className="guest-name">{invite.fullName}</span>
+                <span className="guest-name">
+                  {invite.rsvp ? invite.rsvp.fullName : invite.fullName}
+                </span>
                 {invite.possiblePlusOne && (
                   <span className="plus-one">
-                    Possible +1: {invite.possiblePlusOne}
+                    Possible +1: {invite.rsvp && invite.rsvp.plusOne ?
+                      invite.rsvp.plusOne.fullName :
+                      invite.possiblePlusOne}
                   </span>
                 )}
                 {invite.rsvp && renderRsvpDetails(invite.rsvp)}

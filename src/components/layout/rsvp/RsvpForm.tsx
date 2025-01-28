@@ -19,6 +19,12 @@ export default function RsvpForm() {
   const [childCount, setChildCount] = useState(0);
   const [showDietaryRestrictions] = useState(false);
 
+  const capitalizeFullName = (name: string) => {
+    return name.trim().split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -43,6 +49,7 @@ export default function RsvpForm() {
           return;
         }
         setInvite(response.data);
+        setFormData(prev => ({ ...prev, fullName: capitalizeFullName(prev.fullName) }));
         setStep(2);
       } else {
         throw new Error('No data received from server');
@@ -65,7 +72,18 @@ export default function RsvpForm() {
   };
 
   const handlePlusOneChoice = (keepingOriginal: boolean) => {
-    setFormData(prev => ({ ...prev, keepingPlusOne: keepingOriginal }));
+    // Check if the person RSVPing is the possible plus one
+    const isRsvpingAsPlusOne = formData.fullName.toLowerCase() === invite?.possiblePlusOne?.toLowerCase();
+
+    setFormData(prev => ({
+      ...prev,
+      keepingPlusOne: keepingOriginal,
+      // If they're RSVPing as the plus one and accept the main invitee as their plus one
+      plusOne: keepingOriginal ?
+        (isRsvpingAsPlusOne ? invite?.fullName : invite?.possiblePlusOne) :
+        undefined,
+      newPlusOne: undefined
+    }));
     if (keepingOriginal) {
       setStep(6);
     } else {
@@ -74,6 +92,13 @@ export default function RsvpForm() {
   };
 
   const handleNewPlusOne = (hasNew: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      keepingPlusOne: false,
+      // Clear both plus one fields if they don't want a new one
+      plusOne: hasNew ? prev.plusOne : undefined,
+      newPlusOne: hasNew ? prev.newPlusOne : undefined
+    }));
     if (!hasNew) {
       setStep(6);
     } else {
@@ -83,7 +108,15 @@ export default function RsvpForm() {
 
   const handleNewPlusOneName = (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(6); // Go to children question
+    const form = e.target as HTMLFormElement;
+    const newPlusOneName = capitalizeFullName((form.querySelector('input[type="text"]') as HTMLInputElement).value);
+    setFormData(prev => ({
+      ...prev,
+      keepingPlusOne: false,
+      newPlusOne: newPlusOneName,
+      plusOne: newPlusOneName // Set the plusOne field to the new name
+    }));
+    setStep(6);
   };
 
   const handleChildrenChoice = (hasChildren: boolean) => {
@@ -101,7 +134,12 @@ export default function RsvpForm() {
   };
 
   const handleDietaryRestrictions = (hasRestrictions: boolean) => {
-    setFormData(prev => ({ ...prev, hasDietaryRestrictions: hasRestrictions }));
+    setFormData(prev => ({
+      ...prev,
+      hasDietaryRestrictions: hasRestrictions,
+      // Initialize an empty array instead of pre-populating restrictions
+      dietaryRestrictions: hasRestrictions ? [] : []
+    }));
     if (!hasRestrictions) {
       setStep(10);
     } else {
@@ -125,25 +163,44 @@ export default function RsvpForm() {
         throw new Error('Invalid invite data');
       }
 
+      // Check if the person RSVPing is the possible plus one
+      const isRsvpingAsPlusOne = formData.fullName.toLowerCase() === invite.possiblePlusOne?.toLowerCase();
+
+      // Determine plus one based on the user's choices
+      let plusOne;
+      if (formData.keepingPlusOne) {
+        // If Mark is RSVPing and accepts Betty, she's the plus one
+        // If Betty is RSVPing and accepts Mark, he's the plus one
+        plusOne = {
+          fullName: isRsvpingAsPlusOne ? invite.fullName : invite.possiblePlusOne,
+          dietaryRestrictions: formData.dietaryRestrictions?.find(
+            d => d.guestName === (isRsvpingAsPlusOne ? invite.fullName : invite.possiblePlusOne)
+          )?.restriction
+        };
+      } else if (formData.newPlusOne) {
+        // They said no to original but yes to new plus one and entered a name
+        plusOne = {
+          fullName: formData.newPlusOne,
+          dietaryRestrictions: formData.dietaryRestrictions?.find(
+            d => d.guestName === formData.newPlusOne
+          )?.restriction
+        };
+      }
+
       const payload: RsvpPayload = {
         invitation: invite._id,
         fullName: formData.fullName,
         attending: formData.isAttending || false,
-        plusOne: formData.keepingPlusOne || formData.newPlusOne ? {
-          fullName: formData.keepingPlusOne ? invite.possiblePlusOne : formData.newPlusOne,
-          dietaryRestrictions: formData.dietaryRestrictions?.find(
-            d => d.guestName === (formData.keepingPlusOne ? invite.possiblePlusOne : formData.newPlusOne)
-          )?.restriction
-        } : undefined,
+        plusOne,
         children: formData.children?.map(child => ({
           name: child.fullName,
           dietaryRestrictions: formData.dietaryRestrictions?.find(
             d => d.guestName === child.fullName
-          )?.restriction
+          )?.restriction || undefined
         })),
         dietaryRestrictions: formData.dietaryRestrictions?.find(
           d => d.guestName === formData.fullName
-        )?.restriction,
+        )?.restriction || undefined,
         additionalNotes: formData.additionalNotes
       };
 
@@ -257,7 +314,14 @@ export default function RsvpForm() {
           <input
             type="text"
             value={formData.fullName}
-            onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+            onChange={(e) => setFormData(prev => ({
+              ...prev,
+              fullName: e.target.value
+            }))}
+            onBlur={(e) => setFormData(prev => ({
+              ...prev,
+              fullName: capitalizeFullName(e.target.value)
+            }))}
             placeholder={t.rsvp.form.fullName}
             required
           />
@@ -333,6 +397,7 @@ export default function RsvpForm() {
             type="text"
             value={formData.newPlusOne || ''}
             onChange={(e) => setFormData(prev => ({ ...prev, newPlusOne: e.target.value }))}
+            onBlur={(e) => setFormData(prev => ({ ...prev, newPlusOne: capitalizeFullName(e.target.value) }))}
             placeholder={t.rsvp.form.plusOne.namePlaceholder}
             required
           />
@@ -375,6 +440,11 @@ export default function RsvpForm() {
                     onChange={(e) => {
                       const newChildren = [...(formData.children || [])];
                       newChildren[index] = { fullName: e.target.value };
+                      setFormData(prev => ({ ...prev, children: newChildren }));
+                    }}
+                    onBlur={(e) => {
+                      const newChildren = [...(formData.children || [])];
+                      newChildren[index] = { fullName: capitalizeFullName(e.target.value) };
                       setFormData(prev => ({ ...prev, children: newChildren }));
                     }}
                     required
@@ -425,47 +495,46 @@ export default function RsvpForm() {
           <p className="dietary-instructions">
             {t.rsvp.form.dietary.instructions}
           </p>
+          {/* Show main invitee and their plus one */}
           {[
-            formData.fullName,
-            formData.keepingPlusOne ? invite?.possiblePlusOne : formData.newPlusOne,
-            ...(formData.children?.map(c => c.fullName) || [])
-          ].map((name, index) => (
-            name && (
-              <div key={index} className="dietary-input">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={formData.dietaryRestrictions?.some(r => r.guestName === name) || false}
-                    onChange={(e) => {
-                      const newRestrictions = [...(formData.dietaryRestrictions || [])];
-                      if (e.target.checked) {
-                        newRestrictions.push({ guestName: name, restriction: '' });
-                      } else {
-                        const idx = newRestrictions.findIndex(r => r.guestName === name);
-                        if (idx !== -1) newRestrictions.splice(idx, 1);
-                      }
-                      setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
-                    }}
-                  />
-                  {name}
-                </label>
-                {formData.dietaryRestrictions?.find(r => r.guestName === name) && (
-                  <textarea
-                    value={formData.dietaryRestrictions.find(r => r.guestName === name)?.restriction || ''}
-                    placeholder={t.rsvp.form.dietary.detailsPlaceholder}
-                    onChange={(e) => {
-                      const newRestrictions = [...(formData.dietaryRestrictions || [])];
-                      const idx = newRestrictions.findIndex(r => r.guestName === name);
-                      if (idx !== -1) newRestrictions[idx].restriction = e.target.value;
-                      setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
-                    }}
-                    rows={3}
-                    required
-                    className="dietary-textarea"
-                  />
-                )}
-              </div>
-            )
+            { name: formData.fullName },
+            formData.plusOne ? { name: formData.plusOne } : null,
+            ...(formData.children?.map(child => ({ name: child.fullName })) || [])
+          ].filter((person): person is { name: string } => Boolean(person?.name)).map((person, index) => (
+            <div key={index} className="dietary-input">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={formData.dietaryRestrictions?.some(r => r.guestName === person.name) || false}
+                  onChange={(e) => {
+                    const newRestrictions = [...(formData.dietaryRestrictions || [])];
+                    if (e.target.checked) {
+                      newRestrictions.push({ guestName: person.name, restriction: '' });
+                    } else {
+                      const idx = newRestrictions.findIndex(r => r.guestName === person.name);
+                      if (idx !== -1) newRestrictions.splice(idx, 1);
+                    }
+                    setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
+                  }}
+                />
+                {person.name}
+              </label>
+              {formData.dietaryRestrictions?.find(r => r.guestName === person.name) && (
+                <textarea
+                  value={formData.dietaryRestrictions.find(r => r.guestName === person.name)?.restriction || ''}
+                  placeholder={t.rsvp.form.dietary.detailsPlaceholder}
+                  onChange={(e) => {
+                    const newRestrictions = [...(formData.dietaryRestrictions || [])];
+                    const idx = newRestrictions.findIndex(r => r.guestName === person.name);
+                    if (idx !== -1) newRestrictions[idx].restriction = e.target.value;
+                    setFormData(prev => ({ ...prev, dietaryRestrictions: newRestrictions }));
+                  }}
+                  rows={3}
+                  required
+                  className="dietary-textarea"
+                />
+              )}
+            </div>
           ))}
           {renderButtonGroup(handleDietaryDetails)}
         </form>

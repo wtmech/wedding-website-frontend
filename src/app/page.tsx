@@ -1,8 +1,6 @@
 'use client';
 
 import { Suspense } from 'react';
-import { useEffect } from 'react';
-import { warmupServer } from '@/utils/warmupServer';
 import { images } from '@/config/images';
 import Hero from '@/components/layout/hero/Hero'
 import Content from '@/components/base/content/Content'
@@ -17,10 +15,6 @@ interface WeddingDetail {
 }
 
 function HomeContent() {
-  useEffect(() => {
-    warmupServer();
-  }, []);
-
   return (
     <TranslationProvider>
       {(t) => {
