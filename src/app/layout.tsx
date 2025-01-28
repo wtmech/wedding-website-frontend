@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Alice } from 'next/font/google'
 import HeaderWrapper from '@/components/layout/header/HeaderWrapper'
-import ServerWarmup from '@/components/base/server-warmup/ServerWarmup'
 import "./globals.css";
 
 const playfair = Playfair_Display({ subsets: ['latin'] })
@@ -27,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfair.className} ${alice.variable}`}>
-        <ServerWarmup />
         {!is404 && <HeaderWrapper />}
         {children}
       </body>
