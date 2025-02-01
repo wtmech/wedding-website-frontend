@@ -16,6 +16,10 @@ function GettingThereContent() {
             <section className="getting-there-section">
               <Heading level={2} color="#FFECD9">{t.gettingThere.title}</Heading>
 
+              <div className="shuttle-notice">
+                <p><strong>A shuttle will be provided the day of the wedding to the venue and from the venue if you are staying at any of the hotels listed below. Transportation after or before the wedding will be up to you.</strong></p>
+              </div>
+
               <div className="section getting-there-plane">
                 <Heading level={3} color="#FFECD9">{t.gettingThere.byPlane.title}</Heading>
                 <p>

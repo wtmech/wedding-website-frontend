@@ -25,3 +25,17 @@
 .lodging-section {
   margin-top: 6rem;
 }
+
+.shuttle-notice {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: rgba(255, 236, 217, 0.1);
+  border-radius: 8px;
+}
+
+.shuttle-notice p {
+  color: #FFECD9;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin: 0;
+}
