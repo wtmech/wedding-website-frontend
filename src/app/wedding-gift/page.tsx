@@ -13,7 +13,9 @@ function WeddingGiftContent() {
         <div className="wedding-gift-page page">
           <Content backgroundColor="#332c2a">
             <section className="wedding-gift-section">
-              <Heading level={2} color="#FFECD9">{t.weddingGift.title}</Heading>
+              <div className="title-container">
+                <Heading level={2} color="#FFECD9">{t.weddingGift.title}</Heading>
+              </div>
               <p className="welcome-message">{t.weddingGift.welcomeMessage}</p>
               <p className="assistance-message">{t.weddingGift.assistanceMessage}</p>
               <p className="thank-you-message">{t.weddingGift.thankYouMessage}</p>
