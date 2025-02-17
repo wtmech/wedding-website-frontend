@@ -17,6 +17,7 @@
   list-style: none;
   padding: 2rem;
   margin: 0;
+  text-align: center;
 }
 
 .mobile-menu li {
@@ -29,6 +30,7 @@
   font-size: 1.2rem;
   font-family: var(--alice);
   transition: opacity 0.3s ease;
+  display: inline-block;
 }
 
 .mobile-menu a:hover {
