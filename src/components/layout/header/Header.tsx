@@ -34,6 +34,7 @@ function Header({ className = '' }: HeaderProps) {
 
       {/* DESKTOP NAV */}
       <nav className="header-nav">
+        <LocaleLink href="/wedding-gift" className="nav-button">{t.navigation.weddingGift}</LocaleLink>
         <LocaleLink href="/">{t.navigation.home}</LocaleLink>
         <LocaleLink href="/getting-there">{t.navigation.gettingThere}</LocaleLink>
         <LocaleLink href="/things-to-do-in-calabria">{t.navigation.thingsToDo}</LocaleLink>
@@ -44,6 +45,7 @@ function Header({ className = '' }: HeaderProps) {
 
       {/* MOBILE CONTROLS */}
       <div className="mobile-controls">
+        <LocaleLink href="/wedding-gift" className="nav-button mobile-gift-button">{t.navigation.weddingGift}</LocaleLink>
         <LanguageSwitcher />
         <button
           className={`header-menu-button ${isMenuOpen ? 'open' : ''}`}

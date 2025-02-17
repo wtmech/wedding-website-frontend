@@ -35,7 +35,7 @@
   opacity: 0.8;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .mobile-menu {
     display: none;
   }
@@ -59,6 +59,9 @@
 .mobile-menu.open li:nth-child(4) {
   animation-delay: 0.4s;
 }
+.mobile-menu.open li:nth-child(5) {
+  animation-delay: 0.5s;
+}
 
 @keyframes slideIn {
   from {
@@ -68,5 +71,35 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+/* Style for nav-button in mobile menu */
+.mobile-menu .nav-button {
+  color: #1B4332;
+  background-color: #FFECD9;
+  border-color: #FFECD9;
+}
+
+.mobile-menu .nav-button:hover {
+  background-color: #1B4332;
+  color: #FFECD9;
+  border-color: #1B4332;
+}
+
+/* Show gift link only on mobile */
+.mobile-only-gift {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-only-gift {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-only-gift {
+    display: none;
   }
 }

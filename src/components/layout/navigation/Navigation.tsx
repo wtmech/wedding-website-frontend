@@ -15,6 +15,11 @@ function Navigation({
   return (
     <nav className={`mobile-menu ${isOpen ? 'open' : ''} ${className}`.trim()}>
       <ul>
+        <li className="mobile-only-gift">
+          <LocaleLink href="/wedding-gift" className="nav-button" onClick={onClose}>
+            {t.navigation.weddingGift}
+          </LocaleLink>
+        </li>
         <li>
           <LocaleLink href="/" className="nav-link" onClick={onClose}>
             {t.navigation.home}

@@ -14,6 +14,7 @@ export interface Translations {
     gettingThere: string;
     thingsToDo: string;
     rsvp: string;
+    weddingGift: string;
     menuButton: string;
   };
   home: {
@@ -155,6 +156,26 @@ export interface Translations {
         nameNotFound: string;
         alreadyRsvped: string;
       };
+    };
+  };
+  weddingGift: {
+    title: string;
+    welcomeMessage: string;
+    assistanceMessage: string;
+    thankYouMessage: string;
+    bankDetails: {
+      ibanLabel: string;
+      iban: string;
+      swiftLabel: string;
+      swift: string;
+      bankLabel: string;
+      bank: string;
+      addressLabel: string;
+      address: string;
+      beneficiaryLabel: string;
+      beneficiary: string;
+      referenceLabel: string;
+      reference: string;
     };
   };
 }
